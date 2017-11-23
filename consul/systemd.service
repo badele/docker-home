@@ -1,0 +1,16 @@
+[Unit]
+Description=Consul Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/data/docker/consul/conf/db.env
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStart=/usr/bin/docker run --rm --net=host -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' consul agent -server -dns-port=53 -recursor=192.168.252.254 -bind=${CONSULBINDIP}
+ExecStop=/usr/bin/docker stop consul
+
+[Install]
+WantedBy=multi-user.target
