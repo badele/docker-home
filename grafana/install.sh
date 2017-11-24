@@ -12,12 +12,12 @@ fi
 docker pull $IMGNAME
 
 # Create folder & configuration
-mkdir -p /data/docker/$APP/data
-mkdir -p /data/docker/$APP/conf
-cp $SRC/db.env /data/docker/$APP/conf/
+mkdir -p /data/docker/$APPNAME/data
+mkdir -p /data/docker/$APPNAME/conf
+cp $SRC/db.env /data/docker/$APPNAME/conf/
 
 # Create service
-cp $SRC/systemd.service /etc/systemd/system/$APP.service
+cp $SRC/systemd.service /etc/systemd/system/$APPNAME.service
 systemctl daemon-reload
-systemctl enable $APP
-systemctl restart $APP
+systemctl enable $APPNAME
+systemctl restart $APPNAME
