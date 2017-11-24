@@ -9,7 +9,7 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop emqttd
 ExecStartPre=-/usr/bin/docker rm emqttd
-ExecStart=/usr/bin/docker run --rm --name ${NODENAME} -p 18083:18083 -p 1883:1883 -p 8083:8083 -p 8443:8443 devicexx/emqttd
+ExecStart=/usr/bin/docker run --rm --name ${NODENAME} -p 18083:18083 -p 1883:1883 -p 8083:8083 -p 8443:8443 ${IMGNAME}
 
 [Install]
 WantedBy=multi-user.target
