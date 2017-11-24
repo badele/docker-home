@@ -15,6 +15,7 @@ docker pull $IMGNAME
 mkdir -p /data/docker/$APPNAME/data
 mkdir -p /data/docker/$APPNAME/conf
 cp $SRC/db.env /data/docker/$APPNAME/conf/
+cp $SRC/configuration.yaml /data/docker/$APPNAME/data/
 
 # Create service
 cp $SRC/systemd.service /etc/systemd/system/$APPNAME.service
