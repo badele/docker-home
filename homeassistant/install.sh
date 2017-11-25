@@ -15,7 +15,12 @@ docker pull $IMGNAME
 mkdir -p /data/docker/$APPNAME/data
 mkdir -p /data/docker/$APPNAME/conf
 cp $SRC/db.env /data/docker/$APPNAME/conf/
-cp $SRC/configuration.yaml /data/docker/$APPNAME/data/
+cp $SRC/conf/* /data/docker/$APPNAME/data/
+
+# Overide private configuration
+if [ "$1" != "public" ]; then
+  rsync -avr $SRC/../PRIVATE/$APPNAME/conf/ /data/docker/$APPNAME/data/
+fi
 
 # Create service
 cp $SRC/systemd.service /etc/systemd/system/$APPNAME.service
