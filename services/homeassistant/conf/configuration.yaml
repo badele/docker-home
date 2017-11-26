@@ -1,0 +1,113 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 43.610769
+  longitude: 3.876716
+
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 50
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Paris
+  # Customization file
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Camera
+camera:
+  platform: generic
+  still_image_url: http://www.meteociel.fr/prevision/prev1.png
+  name: 12H
+
+camera 2:
+  platform: generic
+  still_image_url: http://www.meteociel.fr/prevision/prev2.png
+  name: 18H
+
+camera 3:
+  - platform: generic
+    name: ISS
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+    limit_refetch_to_url_change: true
+
+# Weather prediction
+sensor:
+  - platform: yr
+    name: Weather
+    forecast: 6
+    monitored_conditions:
+      - temperature
+      - symbol
+      - precipitation
+      - humidity
+
+  - platform: rest
+    resource: http://127.0.0.1:8500/v1/internal/ui/services
+    name: Consul Passing
+    value_template: '{{ value_json[0]["ChecksPassing"] }}'
+
+  - platform: rest
+    resource: http://127.0.0.1:8500/v1/internal/ui/services
+    name: Consul Critical/Warning
+    value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] }}'
+
+binary_sensor:
+  - platform: iss
+    show_on_map: true
+
+weblink:
+  entities:
+    - name: Google
+      url: http://google.com/
+    - name: My Computer
+      url: http://127.0.0.1
+
+
+
+# Text to speech
+tts:
+  - platform: google
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

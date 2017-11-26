@@ -1,0 +1,15 @@
+meteo:
+  name: Metéo
+  entities:
+    - sensor.weather_symbol
+    - sensor.weather_temperature
+    - sensor.weather_precipitation
+    - sensor.weather_humidity
+    - sun.sun
+    - binary_sensor.iss
+
+servers:
+  name: servers
+  entities:
+    - sensor.consul_passing
+    - sensor.consul_criticalwarning

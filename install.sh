@@ -22,7 +22,7 @@ do
       conf=$(echo "$serviceconf" | cut -d':' -f2)
       SRC="`( cd $(dirname \"$0\") && pwd )`"
 
-      print_title "Install $service with $conf configuration"
+      print_title "Install $service with '$conf' configuration"
       if [ -e $SRC/services/$service/install.sh ]; then
           $SRC/services/$service/install.sh "$conf" "$1"
       fi
