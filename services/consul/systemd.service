@@ -2,9 +2,10 @@
 Description=Consul Service
 After=docker.service
 Requires=docker.service
+ConditionFileNotEmpty=/data/docker/conf/nodes.env
 
 [Service]
-EnvironmentFile=/data/docker/consul/conf/db.env
+EnvironmentFile=/data/docker/conf/nodes.env
 TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop consul
