@@ -9,6 +9,7 @@ SRC="`( cd $(dirname \"$0\") && pwd )`"
 # fi
 
 source ./nodes.env
+source ./lib.sh
 
 # Search install all service for my nodeip
 for nodeidx in ${!DH_SERVICES[*]}
@@ -21,9 +22,9 @@ do
       conf=$(echo "$serviceconf" | cut -d':' -f2)
       SRC="`( cd $(dirname \"$0\") && pwd )`"
 
-      echo "Install $service with $conf configuration"
+      print_title "Install $service with $conf configuration"
       if [ -e $SRC/services/$service/install.sh ]; then
-          $SRC/services/$service/install.sh "$conf" "$2"
+          $SRC/services/$service/install.sh "$conf" "$1"
       fi
     done
   fi

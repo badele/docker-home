@@ -17,3 +17,21 @@ replaceVariablesInFile()
 
     cat /tmp/replaceVariablesInFile.txt > $dstfile
 }
+
+# Source: https://stackoverflow.com/questions/5799303/print-a-character-repeatedly-in-bash
+printf_new() {
+ str=$1
+ num=$2
+ v=$(printf "%-${num}s" "$str")
+ echo "${v// /$str}"
+}
+
+print_title()
+{
+  mess="# $1 #"
+  mlen=${#mess}
+
+  printf_new "#" ${mlen}
+  echo "${mess}"
+  printf_new "#" ${mlen}
+}
