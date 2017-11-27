@@ -5,15 +5,24 @@ misc:
     - binary_sensor.iss
 
 weather_yr:
-  name: Weather yr
+  name: yr Weather
   entities:
     - sensor.weather_symbol
     - sensor.weather_temperature
     - sensor.weather_precipitation
     - sensor.weather_humidity
 
+weather_camera:
+  name: meteociel Cameras
+  entities:
+    - camera.morning
+    - camera.afternoom
+    - camera.tomorrowmorning
+    - camera.tomorrowafternoom
+
+
 servers:
-  name: servers
+  name: Servers
   entities:
     - sensor.consul_passing
     - sensor.consul_criticalwarning
@@ -27,18 +36,18 @@ links:
 
 ## VIEWS ##
 
-default_view:
-  name: Default
-  icon: mdi:home
-  view: yes
-  entities:
-    - group.servers
-    - group.misc
+#default_view:
+#  name: Default
+#  icon: mdi:home
+#  view: yes
+#  entities:
+#    - group.servers
+#    - group.misc
+#    - group.links
 
 weather:
   name: Weather
   view: yes
   entities:
     - group.weather_yr
-    - camera.12h
-    - camera.18h
+    - group.weatehr_camera

@@ -4,12 +4,12 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-EnvironmentFile=/data/docker/homeassistant/conf/db.env
+EnvironmentFile=/data/docker/conf/db.env
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop homeassistant
-ExecStartPre=-/usr/bin/docker rm homeassistant
-ExecStart=/usr/bin/docker run --rm --name=${NODENAME} -v /data/docker/homeassistant/data:/config -v /etc/localtime:/etc/localtime:ro --net=host ${IMGNAME}
+ExecStartPre=-/usr/bin/docker stop %N
+ExecStartPre=-/usr/bin/docker rm %N
+ExecStart=/usr/bin/docker run --rm --name=%N -v /data/docker/%N/data:/config -v /etc/localtime:/etc/localtime:ro --net=host ${IMGNAME}
 
 [Install]
 WantedBy=multi-user.target

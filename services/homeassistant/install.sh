@@ -22,22 +22,22 @@ CNETWORK="DH_NETWORK" ; NETWORK=${!CNETWORK}
 docker pull ${IMGNAME}
 
 # Create folder & configuration
-mkdir -p /data/docker/${APPNAME}/data
-mkdir -p /data/docker/${APPNAME}/conf
-cp $SRC/conf/* /data/docker/${APPNAME}/data/
+mkdir -p /data/docker/${NODENAME}/data
+mkdir -p /data/docker/${NODENAME}/conf
+cp $SRC/conf/* /data/docker/${NODENAME}/data/
 
 # interpret node vars
 set | egrep "^DH_" > /data/docker/conf/nodes.env
 
 # Overide private configuration
 if [ "$2" != "public" ]; then
-  rsync -avr $SRC/../../PRIVATE/${APPNAME}/conf/ /data/docker/${APPNAME}/data/
+  rsync -avr $SRC/../../PRIVATE/${NODENAME}/conf/ /data/docker/${NODENAME}/data/
 fi
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service
-replaceVariablesInFile /data/docker/${APPNAME}/data/configuration.yaml /data/docker/${APPNAME}/data/configuration.yaml
+replaceVariablesInFile /data/docker/${NODENAME}/data/configuration.yaml /data/docker/${NODENAME}/data/configuration.yaml
 
 systemctl daemon-reload
-systemctl enable ${APPNAME}-${conf}
-systemctl restart ${APPNAME}-${conf}
+systemctl enable ${NODENAME}
+systemctl restart ${NODENAME}
