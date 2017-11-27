@@ -16,6 +16,7 @@ CAPPNAME="DH_CONF_HOMEASSISTANT_${conf^^}_APPNAME" ; APPNAME=${!CAPPNAME}
 NODENAME="${!CAPPNAME}-${conf}"
 CIMGNAME="DH_CONF_HOMEASSISTANT_${conf^^}_IMGNAME" ; IMGNAME=${!CIMGNAME}
 CBINDIP="DH_CONF_HOMEASSISTANT_${conf^^}_BINDIP" ; BINDIP=${!CBINDIP}
+CNETWORK="DH_NETWORK" ; NETWORK=${!CNETWORK}
 
 # Get docker image
 docker pull ${IMGNAME}
@@ -35,6 +36,7 @@ fi
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service
+replaceVariablesInFile /data/docker/${APPNAME}/data/configuration.yaml /data/docker/${APPNAME}/data/configuration.yaml
 
 systemctl daemon-reload
 systemctl enable ${APPNAME}-${conf}

@@ -1,15 +1,44 @@
-meteo:
-  name: Metéo
+misc:
+  name: misc
+  entities:
+    - sun.sun
+    - binary_sensor.iss
+
+weather_yr:
+  name: Weather yr
   entities:
     - sensor.weather_symbol
     - sensor.weather_temperature
     - sensor.weather_precipitation
     - sensor.weather_humidity
-    - sun.sun
-    - binary_sensor.iss
 
 servers:
   name: servers
   entities:
     - sensor.consul_passing
     - sensor.consul_criticalwarning
+
+
+links:
+  name: Links
+  entities:
+    - weblink.google
+    - weblink.my_computer
+
+## VIEWS ##
+
+default_view:
+  name: Default
+  icon: mdi:home
+  view: yes
+  entities:
+    - group.servers
+    - group.misc
+
+weather:
+  name: Weather
+  view: yes
+  entities:
+    - group.weather_yr
+    - camera.12h
+    - camera.18h

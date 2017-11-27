@@ -95,6 +95,10 @@ binary_sensor:
   - platform: iss
     show_on_map: true
 
+device_tracker:
+  - platform: nmap_tracker
+    hosts: ${NETWORK}
+
 weblink:
   entities:
     - name: Google
