@@ -100,6 +100,10 @@ camera 9:
   - platform: mjpeg
     mjpeg_url: http://81.187.169.211/mjpg/quad/video.mjpg
 
+camera 10:
+  - platform: mjpeg
+    mjpeg_url: http://145.238.185.10/jpg/1/image.jpg
+
 
 # Weather prediction
 sensor:
