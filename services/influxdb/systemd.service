@@ -6,10 +6,10 @@ Requires=docker.service
 [Service]
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop influxdb
-ExecStartPre=-/usr/bin/docker rm influxdb
-ExecStart=/usr/bin/docker run  --rm --name influxdb -p 8086:8086 -v /data/docker/influxdb/data:/var/lib/influxdb ${IMGNAME}
-ExecStop=/usr/bin/docker stop influxdb
+ExecStartPre=-/usr/bin/docker stop %N
+ExecStartPre=-/usr/bin/docker rm %N
+ExecStart=/usr/bin/docker run  --rm --name %N --net=host -p 8086:8086 -e 'INFLUXDB_DB=home_assistant' -v /data/docker/%N/data:/var/lib/influxdb ${IMGNAME}
+ExecStop=/usr/bin/docker stop %N
 
 [Install]
 WantedBy=multi-user.target

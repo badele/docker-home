@@ -9,7 +9,8 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop %N
 ExecStartPre=-/usr/bin/docker rm %N
-ExecStart=/usr/bin/docker run --rm --name=%N -v /data/docker/%N/data:/config -v /etc/localtime:/etc/localtime:ro --net=host ${IMGNAME}
+ExecStart=/usr/bin/docker run --rm --name=%N --net=host -v /data/docker/%N/data:/config -v /etc/localtime:/etc/localtime:ro ${IMGNAME}
+ExecStop=/usr/bin/docker stop %N
 
 [Install]
 WantedBy=multi-user.target

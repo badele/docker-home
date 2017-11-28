@@ -14,6 +14,10 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
 
+# Store event to influxdb database
+influxdb:
+  host: ${INFLUXDB_SERVER}
+
 # Enables the frontend
 frontend:
 

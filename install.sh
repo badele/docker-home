@@ -11,6 +11,9 @@ SRC="`( cd $(dirname \"$0\") && pwd )`"
 source ./nodes.env
 source ./lib.sh
 
+# Show node vars
+set | egrep "^DH_"
+
 # Search install all service for my nodeip
 for nodeidx in ${!DH_SERVICES[*]}
 do

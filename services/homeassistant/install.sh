@@ -16,6 +16,10 @@ NODENAME="${!CAPPNAME}-${conf}"
 CIMGNAME="DH_CONF_HOMEASSISTANT_${conf^^}_IMGNAME" ; IMGNAME=${!CIMGNAME}
 CBINDIP="DH_CONF_HOMEASSISTANT_${conf^^}_BINDIP" ; BINDIP=${!CBINDIP}
 CNETWORK="DH_NETWORK" ; NETWORK=${!CNETWORK}
+CINFLUXDB_SERVER="DH_CONF_HOMEASSISTANT_HA_INFLUXDB_SERVER" ; INFLUXDB_SERVER=${!CINFLUXDB_SERVER}
+
+# interpret node vars
+set | egrep "^DH_" > /data/docker/conf/nodes.env
 
 # Get docker image
 docker pull ${IMGNAME}
@@ -24,9 +28,6 @@ docker pull ${IMGNAME}
 mkdir -p /data/docker/${NODENAME}/data
 mkdir -p /data/docker/${NODENAME}/conf
 cp $SRC/conf/* /data/docker/${NODENAME}/data/
-
-# interpret node vars
-set | egrep "^DH_" > /data/docker/conf/nodes.env
 
 # Overide private configuration
 if [ "$2" != "public" ]; then
