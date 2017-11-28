@@ -53,26 +53,27 @@ map:
 # Track the sun
 sun:
 
+
 # Camera
 camera:
   platform: generic
   still_image_url: http://www.meteociel.fr/prevision/prev0.png
-  name: morning
+  name: mcn
 
 camera 2:
   platform: generic
   still_image_url: http://www.meteociel.fr/prevision/prev1.png
-  name: afternoom
+  name: mcn+1
 
 camera 3:
   platform: generic
-  still_image_url: http://www.meteociel.fr/prevision/prev4.png
-  name: tommorow-morning
+  still_image_url: http://www.meteociel.fr/prevision/prev2.png
+  name: mcn+2
 
 camera 4:
   platform: generic
-  still_image_url: http://www.meteociel.fr/prevision/prev5.png
-  name: tommorow-afternoom
+  still_image_url: http://www.meteociel.fr/prevision/prev3.png
+  name: mcn+3
 
 
 camera 5:
@@ -81,16 +82,64 @@ camera 5:
     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
     limit_refetch_to_url_change: true
 
+camera 6:
+  - platform: generic
+    name: Montpellier
+    still_image_url: https://www.yr.no/place/France/Languedoc-Roussillon/Montpellier/meteogram.svg
+    content_type: 'image/svg+xml'
+
+camera 7:
+  - platform: mjpeg
+    mjpeg_url: http://96.10.1.168/mjpg/1/video.mjpg
+
+camera 8:
+  - platform: mjpeg
+    mjpeg_url: http://50.198.255.22:8084/record/current.jpg?rand=999999
+
+camera 9:
+  - platform: mjpeg
+    mjpeg_url: http://81.187.169.211/mjpg/quad/video.mjpg
+
+
 # Weather prediction
 sensor:
+  - platform: moon
+
   - platform: yr
-    name: Weather
+    name: yr
     forecast: 6
     monitored_conditions:
-      - temperature
       - symbol
+      - temperature
       - precipitation
       - humidity
+
+  - platform: buienradar
+    name: buienradar
+    monitored_conditions:
+      - symbol
+      - temperature
+      - precipitation
+      - humidity
+      - stationname
+      - conditioncode
+      - condition
+      - conditiondetailed
+      - conditionexact
+      - irradiance
+
+  - platform: yweather
+    name: yweather
+    monitored_conditions:
+      - weather
+      - weather_current
+      - temp_min
+      - temp_max
+      - wind_speed
+      - pressure
+      - visibility
+      - humidity
+      - temperature
 
   - platform: rest
     resource: http://127.0.0.1:8500/v1/internal/ui/services

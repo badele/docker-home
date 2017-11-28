@@ -1,25 +1,54 @@
 misc:
-  name: misc
+  name: Misc
   entities:
     - sun.sun
+    - sensor.moon
     - binary_sensor.iss
 
 weather_yr:
   name: yr Weather
   entities:
-    - sensor.weather_symbol
-    - sensor.weather_temperature
-    - sensor.weather_precipitation
-    - sensor.weather_humidity
+    - sensor.yr_symbol
+    - sensor.yr_temperature
+    - sensor.yr_precipitation
+    - sensor.yr_humidity
+
+weather_buienradar:
+  name: buienradar Weather
+  entities:
+    - sensor.buienradar_symbol
+    - sensor.buienradar_temperature
+    - sensor.buienradar_precipitation
+    - sensor.buienradar_humidity
+    - sensor.buienradar_stationname
+    - sensor.buienradar_conditioncode
+    - sensor.buienradar_condition
+    - sensor.buienradar_conditiondetailed
+    - sensor.buienradar_conditionexact
+    - sensor.buienradar_irradiance
+
+weather_yweather:
+  name: yweather Weather
+  entities:
+    - sensor.yweather_condition
+    - sensor.yweather_current
+    - sensor.yweather_humidity
+    - sensor.yweather_pressure
+    - sensor.yweather_temperature
+    - sensor.yweather_temperature_max
+    - sensor.yweather_temperature_min
+    - sensor.yweather_visibility
+    - sensor.yweather_wind_speed
+
 
 weather_camera:
-  name: meteociel Cameras
+  name: Meteociel Cameras
   entities:
-    - camera.morning
-    - camera.afternoom
-    - camera.tomorrowmorning
-    - camera.tomorrowafternoom
-
+    - camera.mcn
+    - camera.mcn1
+    - camera.mcn2
+    - camera.mcn3
+    - camera.mcn4
 
 servers:
   name: Servers
@@ -45,9 +74,19 @@ links:
 #    - group.misc
 #    - group.links
 
-weather:
+vweather:
   name: Weather
   view: yes
   entities:
     - group.weather_yr
-    - group.weatehr_camera
+    - group.weather_buienradar
+    - group.weather_yweather
+    - group.weather_camera
+
+vmisc:
+  name: Misc
+  view: yes
+  entities:
+    - group.misc
+    - group.servers
+    - group.links

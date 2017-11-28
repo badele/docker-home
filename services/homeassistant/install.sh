@@ -4,7 +4,6 @@ SRC="`( cd $(dirname \"$0\") && pwd )`"
 . $SRC/../../nodes.env
 . $SRC/../../lib.sh
 
-
 if [ "$(whoami)" != "root" ] ; then
    echo "Please run in root"
    exit 0

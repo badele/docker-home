@@ -4,7 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-EnvironmentFile=/data/docker/conf/db.env
+EnvironmentFile=/data/docker/conf/nodes.env
 TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop %N
