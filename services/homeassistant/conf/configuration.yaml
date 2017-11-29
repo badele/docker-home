@@ -115,36 +115,19 @@ sensor:
 
   - platform: yr
     name: yr
-    forecast: 6
+#    forecast: 6
     monitored_conditions:
       - symbol
       - temperature
       - precipitation
       - humidity
-
-  - platform: buienradar
-    name: buienradar
-    monitored_conditions:
-      - symbol
-      - temperature
-      - precipitation
-      - humidity
-      - stationname
-      - conditioncode
-      - condition
-      - conditiondetailed
-      - conditionexact
-      - irradiance
 
   - platform: yweather
     name: yweather
     monitored_conditions:
       - weather
       - weather_current
-      - temp_min
-      - temp_max
       - wind_speed
-      - pressure
       - visibility
       - humidity
       - temperature

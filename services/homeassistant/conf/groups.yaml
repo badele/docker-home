@@ -13,20 +13,6 @@ weather_yr:
     - sensor.yr_precipitation
     - sensor.yr_humidity
 
-weather_buienradar:
-  name: buienradar Weather
-  entities:
-    - sensor.buienradar_symbol
-    - sensor.buienradar_temperature
-    - sensor.buienradar_precipitation
-    - sensor.buienradar_humidity
-    - sensor.buienradar_stationname
-    - sensor.buienradar_conditioncode
-    - sensor.buienradar_condition
-    - sensor.buienradar_conditiondetailed
-    - sensor.buienradar_conditionexact
-    - sensor.buienradar_irradiance
-
 weather_yweather:
   name: yweather Weather
   entities:
@@ -79,9 +65,9 @@ vweather:
   view: yes
   entities:
     - group.weather_yr
-    - group.weather_buienradar
     - group.weather_yweather
     - group.weather_camera
+    - camera.montpellier
 
 vmisc:
   name: Misc
@@ -90,3 +76,12 @@ vmisc:
     - group.misc
     - group.servers
     - group.links
+
+vcamera:
+  name: Camera
+  view: yes
+  entities:
+    - camera.mjpeg_camera
+    - camera.mjpeg_camera_2
+    - camera.mjpeg_camera_3
+    - camera.mjpeg_camera_4
