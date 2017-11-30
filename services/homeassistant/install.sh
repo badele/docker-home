@@ -1,13 +1,15 @@
 #!/bin/bash
 
-SRC="`( cd $(dirname \"$0\") && pwd )`"
-. $SRC/../../nodes.env
-. $SRC/../../lib.sh
-
+# The script must be running in root
 if [ "$(whoami)" != "root" ] ; then
    echo "Please run in root"
    exit 0
 fi
+
+# Load lib and environment vars
+SRC="`( cd $(dirname \"$0\") && pwd )`"
+source /data/docker/conf/nodes.env
+source $SRC/../../lib.sh
 
 # Init vars
 conf=$1
@@ -17,9 +19,6 @@ CIMGNAME="DH_CONF_HOMEASSISTANT_${conf^^}_IMGNAME" ; IMGNAME=${!CIMGNAME}
 CBINDIP="DH_CONF_HOMEASSISTANT_${conf^^}_BINDIP" ; BINDIP=${!CBINDIP}
 CNETWORK="DH_NETWORK" ; NETWORK=${!CNETWORK}
 CINFLUXDB_SERVER="DH_CONF_HOMEASSISTANT_HA_INFLUXDB_SERVER" ; INFLUXDB_SERVER=${!CINFLUXDB_SERVER}
-
-# interpret node vars
-set | egrep "^DH_" > /data/docker/conf/nodes.env
 
 # Get docker image
 docker pull ${IMGNAME}

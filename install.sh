@@ -1,20 +1,21 @@
 #!/bin/bash
 
+# The script must be running in root
+if [ "$(whoami)" != "root" ] ; then
+   echo "Please run in root"
+   exit 0
+fi
+
+# Load lib and environment vars
 SRC="`( cd $(dirname \"$0\") && pwd )`"
-
-# if [ "$1" == "" ]; then
-#   echo "Usage:"
-#   echo "$0 NODEID [public]"
-#   exit 1
-# fi
-
 source ./nodes.env
 source ./lib.sh
 
-# Show node vars
-set | egrep "^DH_"
+# Compute node vars
+mkdir -p /data/docker/conf
+set | egrep "^DH_" | tee /data/docker/conf/nodes.env
 
-# Search install all service for my nodeip
+# Install all services for node (host computer)
 for nodeidx in ${!DH_SERVICES[*]}
 do
   NODEIP=${DH_NODEIP[$nodeidx]}

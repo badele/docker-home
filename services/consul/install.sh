@@ -1,14 +1,15 @@
 #!/bin/bash
 
-SRC="`( cd $(dirname \"$0\") && pwd )`"
-. $SRC/../../nodes.env
-. $SRC/../../lib.sh
-
-
+# The script must be running in root
 if [ "$(whoami)" != "root" ] ; then
    echo "Please run in root"
    exit 0
 fi
+
+# Load lib and environment vars
+SRC="`( cd $(dirname \"$0\") && pwd )`"
+source /data/docker/conf/nodes.env
+source $SRC/../../lib.sh
 
 # Init vars
 conf=$1
@@ -21,14 +22,10 @@ CBINDIP="DH_CONF_CONSUL_${conf^^}_BINDIP" ; BINDIP=${!CBINDIP}
 docker pull ${IMGNAME}
 
 # Create folder & configuration
-mkdir -p /data/docker/conf
-mkdir -p /data/docker/${APPNAME}-${conf}/data
-
-# interpret node vars
-set | egrep "^DH_" > /data/docker/conf/nodes.env
+mkdir -p /data/docker/${NODENAME}
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service
 systemctl daemon-reload
-systemctl enable ${APPNAME}-${conf}
-systemctl restart ${APPNAME}-${conf}
+systemctl enable ${NODENAME}
+systemctl restart ${NODENAME}
