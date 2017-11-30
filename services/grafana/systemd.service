@@ -10,7 +10,7 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop %N
 ExecStartPre=-/usr/bin/docker rm %N
-ExecStart=/usr/bin/docker run --rm -p 3000:3000 --name=%N -v /data/docker/%N/dashboards:/data/dashboards -v /data/docker/%N/etc:/etc/grafana -v /data/docker/%N/data/data:/var/lib/grafana ${IMGNAME}
+ExecStart=/usr/bin/docker run --rm -p 3000:3000 --name=%N -v /data/docker/%N/dashboards:/data/dashboards -v /data/docker/%N/etc:/etc/grafana -v /data/docker/%N/lib:/var/lib/grafana ${IMGNAME}
 ExecStop=/usr/bin/docker stop grafana
 
 [Install]
