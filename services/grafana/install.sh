@@ -22,6 +22,7 @@ docker pull ${IMGNAME}
 
 # Create folder & configuration
 mkdir -p /data/docker/${NODENAME}/etc
+mkdir -p /data/docker/${NODENAME}/lib
 mkdir -p /data/docker/${NODENAME}/dashboards
 
 # Copy configuration files
