@@ -1,0 +1,19 @@
+{
+  "service": {
+    "name": "docker",
+    "tags": [],
+    "address": "",
+    "port": 666,
+    "enableTagOverride": false,
+    "checks": [
+      {
+        "id": "mem-util",
+        "name": "Memory utilization",
+        "docker_container_id": "consul-s1",
+        "shell": "/bin/sh",
+        "script": "netstat -an | grep LIST | grep '127.0.0.1:53'",
+        "interval": "10s"
+      }
+    ]
+  }
+}

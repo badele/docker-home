@@ -8,9 +8,9 @@ ConditionFileNotEmpty=/data/docker/conf/nodes.env
 EnvironmentFile=/data/docker/conf/nodes.env
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop consul
-ExecStartPre=-/usr/bin/docker rm consul
-ExecStart=/usr/bin/docker run --rm --net=host --name ${NODENAME}  -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}' ${IMGNAME} agent -node ${NODENAME} -server -dns-port=53 -recursor=${RECURSOR} -bind=${BINDIP} -bootstrap-expect=1 -ui
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 stop ${NODENAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 rm ${NODENAME}
+ExecStart=/usr/bin/docker -H 0.0.0.0:2375 run --rm --net=host --name ${NODENAME} -v /data/docker/${NODENAME}/data/config:/consul/config -e 'DOCKER_HOST=tcp://${BINDIP}:2375' -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true, "enable_script_checks": true, "server": true}' ${IMGNAME} agent -node ${NODENAME} -server -dns-port=53 -recursor=${RECURSOR} -bind=${BINDIP} -bootstrap-expect=1 -ui
 
 [Install]
 WantedBy=multi-user.target

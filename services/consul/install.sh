@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Source: https://www.consul.io/docs/guides/consul-containers.html
+
 # The script must be running in root
 if [ "$(whoami)" != "root" ] ; then
    echo "Please run in root"
@@ -20,10 +22,12 @@ CBINDIP="DH_CONF_CONSUL_${conf^^}_BINDIP" ; BINDIP=${!CBINDIP}
 CRECURSOR="DH_CONF_CONSUL_${conf^^}_RECURSOR"; RECURSOR=${!RECURSOR}
 
 # Get docker image
-docker pull ${IMGNAME}
+docker -H 0.0.0.0:2375 pull ${IMGNAME}
 
 # Create folder & configuration
-mkdir -p /data/docker/${NODENAME}
+mkdir -p /data/docker/${NODENAME}/data/config
+cp $SRC/conf/default/config/google.json /data/docker/${NODENAME}/data/config/google.json
+cp $SRC/conf/default/config/docker.json /data/docker/${NODENAME}/data/config/docker.json
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service
