@@ -1,0 +1,27 @@
+{
+  "service": {
+    "name": "homeassistant",
+    "tags": [],
+    "address": "",
+    "port": 8123,
+    "enableTagOverride": false,
+    "checks": [
+      {
+        "id": "homeassistant-process",
+        "name": "Homeassistant process",
+        "docker_container_id": "homeassistant-cf",
+        "shell": "/bin/sh",
+        "script": "ps aux | grep 'homeassistant --config /config' | grep python | grep -v grep",
+        "interval": "10s"
+      },
+      {
+        "id": "homeassistant-checkconfig",
+        "name": "Homeassistant check config",
+        "docker_container_id": "homeassistant-cf",
+        "shell": "/bin/sh",
+        "script": "python -m homeassistant --script check_config --config /config",
+        "interval": "10s"
+      }
+    ]
+  }
+}

@@ -21,12 +21,11 @@ CNETWORK="DH_NETWORK" ; NETWORK=${!CNETWORK}
 CINFLUXDB_SERVER="DH_CONF_HOMEASSISTANT_HA_INFLUXDB_SERVER" ; INFLUXDB_SERVER=${!CINFLUXDB_SERVER}
 
 # Get docker image
-docker pull ${IMGNAME}
+docker -H 0.0.0.0:2375 pull ${IMGNAME}
 
 # Create folder & configuration
 mkdir -p /data/docker/${NODENAME}/data
-mkdir -p /data/docker/${NODENAME}/conf
-cp $SRC/conf/* /data/docker/${NODENAME}/data/
+cp $SRC/conf/default/* /data/docker/${NODENAME}/data/
 
 # Overide private configuration
 if [ "$2" != "public" ]; then

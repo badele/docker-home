@@ -26,8 +26,7 @@ docker -H 0.0.0.0:2375 pull ${IMGNAME}
 
 # Create folder & configuration
 mkdir -p /data/docker/${NODENAME}/data/config
-cp $SRC/conf/default/config/google.json /data/docker/${NODENAME}/data/config/google.json
-cp $SRC/conf/default/config/docker.json /data/docker/${NODENAME}/data/config/docker.json
+cp $SRC/conf/default/config/*.json /data/docker/${NODENAME}/data/config/
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service
