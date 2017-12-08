@@ -15,6 +15,8 @@ source $SRC/../../lib.sh
 
 # Init vars
 conf=$1
+ENVIRONMENT=$2
+
 CAPPNAME="DH_CONF_CONSUL_${conf^^}_APPNAME" ; APPNAME=${!CAPPNAME}
 NODENAME="${!CAPPNAME}-${conf}"
 CIMGNAME="DH_CONF_CONSUL_${conf^^}_IMGNAME" ; IMGNAME=${!CIMGNAME}
@@ -25,8 +27,8 @@ CRECURSOR="DH_CONF_CONSUL_${conf^^}_RECURSOR"; RECURSOR=${!RECURSOR}
 docker -H 0.0.0.0:2375 pull ${IMGNAME}
 
 # Create folder & configuration
-mkdir -p /data/docker/${NODENAME}/data/config
-cp $SRC/conf/default/config/*.json /data/docker/${NODENAME}/data/config/
+mkdir -p /data/docker/${NODENAME}-${ENVIRONMENT}/data/config
+cp $SRC/conf/default/config/*.json /data/docker/${NODENAME}-${ENVIRONMENT}/data/config/
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service

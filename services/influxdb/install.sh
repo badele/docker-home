@@ -13,15 +13,17 @@ source $SRC/../../lib.sh
 
 # Init vars
 conf=$1
+ENVIRONMENT=$2
+
 CAPPNAME="DH_CONF_INFLUXDB_${conf^^}_APPNAME" ; APPNAME=${!CAPPNAME}
 NODENAME="${!CAPPNAME}-${conf}"
 CIMGNAME="DH_CONF_INFLUXDB_${conf^^}_IMGNAME" ; IMGNAME=${!CIMGNAME}
 
 # Get docker image
-docker pull ${IMGNAME}
+docker -H 0.0.0.0:2375 pull ${IMGNAME}
 
 # Create folder & configuration
-mkdir -p /data/docker/${NODENAME}/data
+mkdir -p /data/docker/${NODENAME}-${ENVIRONMENT}/data
 
 # Create service
 replaceVariablesInFile $SRC/systemd.service /etc/systemd/system/${NODENAME}.service

@@ -18,6 +18,18 @@ replaceVariablesInFile()
     cat /tmp/replaceVariablesInFile.txt > $dstfile
 }
 
+replaceVariablesFromFolder()
+{
+    srcdir=$1
+    dstdir=$2
+
+    mkdir -p $dstdir
+    for filename in $(ls $srcdir/); do
+        replaceVariablesInFile "$srcdir/$filename" "$dstdir/$filename"
+    done
+}
+
+
 # Source: https://stackoverflow.com/questions/5799303/print-a-character-repeatedly-in-bash
 printf_new() {
  str=$1

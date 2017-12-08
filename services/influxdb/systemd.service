@@ -4,11 +4,12 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+EnvironmentFile=/data/docker/conf/nodes.env
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop %N
-ExecStartPre=-/usr/bin/docker rm %N
-ExecStart=/usr/bin/docker run  --rm --name %N --net=host -p 8086:8086 -e 'INFLUXDB_DB=home_assistant' -v /data/docker/%N/data:/var/lib/influxdb ${IMGNAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 stop ${NODENAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 rm ${NODENAME}
+ExecStart=/usr/bin/docker -H 0.0.0.0:2375 run  --rm --name ${NODENAME} --net=host -p 8086:8086 -e 'INFLUXDB_DB=home_assistant' -v /data/docker/${NODENAME}-${ENVIRONMENT}/data:/var/lib/influxdb ${IMGNAME}
 ExecStop=/usr/bin/docker stop %N
 
 [Install]

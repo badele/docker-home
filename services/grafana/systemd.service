@@ -8,9 +8,9 @@ ConditionFileNotEmpty=/data/docker/conf/nodes.env
 EnvironmentFile=/data/docker/conf/nodes.env
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop %N
-ExecStartPre=-/usr/bin/docker rm %N
-ExecStart=/usr/bin/docker run --rm -p 3000:3000 --name=%N -v /data/docker/%N/dashboards:/data/dashboards -v /data/docker/%N/etc:/etc/grafana -v /data/docker/%N/lib:/var/lib/grafana ${IMGNAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 stop ${NODENAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 rm ${NODENAME}
+ExecStart=/usr/bin/docker -H 0.0.0.0:2375 run  --rm --name ${NODENAME}  -v /data/docker/${NODENAME}-${ENVIRONMENT}/dashboards:/data/dashboards -v /data/docker/${NODENAME}-${ENVIRONMENT}/etc:/etc/grafana -v /data/docker/${NODENAME}-${ENVIRONMENT}/lib:/var/lib/grafana ${IMGNAME}
 ExecStop=/usr/bin/docker stop grafana
 
 [Install]

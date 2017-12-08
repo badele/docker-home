@@ -6,6 +6,14 @@ if [ "$(whoami)" != "root" ] ; then
    exit 0
 fi
 
+if [ "$1" == "" ]; then
+    echo "Usage:"
+    echo "$0 environment"
+    echo "ex: $0 private/public"
+    exit 0
+fi
+
+
 # Load lib and environment vars
 SRC="`( cd $(dirname \"$0\") && pwd )`"
 source ./nodes.env

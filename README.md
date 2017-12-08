@@ -1,6 +1,13 @@
 # docker-home
 Using docker at home
 
+# Configure docker in Remote API mode
+Create file `/etc/systemd/system/docker.service.d/override.conf` with this content
+```
+ExecStart=
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -s overlay2
+```
+
 # Public repo
 git clone git@github.com:badele/docker-home.git
 cd docker-home

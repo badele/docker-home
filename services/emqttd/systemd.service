@@ -7,9 +7,9 @@ Requires=docker.service
 EnvironmentFile=/data/docker/emqttd/conf/db.env
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker stop emqttd
-ExecStartPre=-/usr/bin/docker rm emqttd
-ExecStart=/usr/bin/docker run --rm --name ${NODENAME} -p 18083:18083 -p 1883:1883 -p 8083:8083 -p 8443:8443 ${IMGNAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 stop ${NODENAME}
+ExecStartPre=-/usr/bin/docker -H 0.0.0.0:2375 rm ${NODENAME}
+ExecStart=/usr/bin/docker -H 0.0.0.0:2375 run  --rm --name ${NODENAME} -p 18083:18083 -p 1883:1883 -p 8083:8083 -p 8443:8443 ${IMGNAME}
 
 [Install]
 WantedBy=multi-user.target
