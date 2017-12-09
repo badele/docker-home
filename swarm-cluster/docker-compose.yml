@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+    node-1:
+        hostname: node-1
+        image: docker:1.12-dind
+        restart: always
+        tty: true
+        privileged: true
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        command: [
+            '--log-level', 'debug',
+            '--storage-driver', 'overlay',
+        ]
+        networks:
+          - swarm        
+    node-2:
+        hostname: node-2
+        extends:
+            service: node-1
+    node-3:
+        hostname: node-3
+        extends:
+            service: node-1
+
+networks:
+  swarm:
+    driver: bridge
