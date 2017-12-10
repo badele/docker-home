@@ -1,7 +1,6 @@
-version: '2'
+version: '3'
 
 services:
-
     node-1:
         hostname: node-1
         image: docker:1.12-dind
@@ -15,17 +14,29 @@ services:
             '--log-level', 'debug',
             '--storage-driver', 'overlay',
         ]
-        networks:
-          - swarm        
     node-2:
         hostname: node-2
-        extends:
-            service: node-1
+        image: docker:1.12-dind
+        restart: always
+        tty: true
+        privileged: true
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        command: [
+            '--log-level', 'debug',
+            '--storage-driver', 'overlay',
+        ]
     node-3:
         hostname: node-3
-        extends:
-            service: node-1
-
-networks:
-  swarm:
-    driver: bridge
+        image: docker:1.12-dind
+        restart: always
+        tty: true
+        privileged: true
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        command: [
+            '--log-level', 'debug',
+            '--storage-driver', 'overlay',
+        ]
