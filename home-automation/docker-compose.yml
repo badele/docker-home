@@ -5,15 +5,19 @@ version: '3'
 services:
 
   consul:
-    image:  gliderlabs/consul-server:latest
+    image:  gliderlabs/consul-server:0.6
     command: "-advertise=${DOCKER_IP} -server -bootstrap"
     container_name: consul
     hostname: ${DOCKER_IP}
     ports:
     - 8500:8500
+    environment:
+      - SERVICE_8500_CHECK_TCP=true
+      - SERVICE_8500_CHECK_INTERVAL=15s
+      - SERVICE_8500_CHECK_TIMEOUT=3s
 
   registrator:
-    image: gliderlabs/registrator:latest
+    image: gliderlabs/registrator:v7
     command: "-ip ${DOCKER_IP} consul://${DOCKER_IP}:8500"
     container_name: registrator
     hostname: ${DOCKER_IP}
@@ -21,6 +25,36 @@ services:
     - consul
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
+
+  influxdb:
+    image:  influxdb:1.4.2
+    container_name: influxdb
+    hostname: ${DOCKER_IP}
+    ports:
+    - 8086:8086
+    environment:
+      - INFLUXDB_DB=home_assistant
+      - SERVICE_8086_CHECK_TCP=true
+      - SERVICE_8086_CHECK_INTERVAL=15s
+      - SERVICE_8086_CHECK_TIMEOUT=3s
+    volumes:
+      - /data/docker/influxdb/data:/var/lib/influxdb
+
+  grafana:
+    image:  grafana/grafana:4.6.2
+    container_name: grafana
+    hostname: ${DOCKER_IP}
+    ports:
+    - 3000:3000
+    environment:
+      - SERVICE_3000_CHECK_TCP=true
+      - SERVICE_3000_CHECK_INTERVAL=15s
+      - SERVICE_3000_CHECK_TIMEOUT=3s
+#    volumes:
+#      - /data/docker/grafana/dashboards:/data/dashboards
+#      - /data/docker/grafana/etc:/etc/grafana
+#      - /data/docker/grafana/lib:/var/lib/grafana
+
 
     # consul-n1:
     #   image: consul:1.0.1
