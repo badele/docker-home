@@ -1,0 +1,46 @@
+version: '3'
+
+# export DOCKER_IP=$(docker info | grep -w 'Node Address' | awk '{print $3}')
+
+services:
+
+  consul:
+    image:  gliderlabs/consul-server:latest
+    command: "-advertise=${DOCKER_IP} -server -bootstrap"
+    container_name: consul
+    hostname: ${DOCKER_IP}
+    ports:
+    - 8500:8500
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    command: "-ip ${DOCKER_IP} consul://${DOCKER_IP}:8500"
+    container_name: registrator
+    hostname: ${DOCKER_IP}
+    depends_on:
+    - consul
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+
+    # consul-n1:
+    #   image: consul:1.0.1
+    #   volumes:
+    #     - "./consul/n1:/consul/config"
+    #   environment:
+    #     - "CONSUL_ALLOW_PRIVILEGED_PORTS="
+    #     - "CONSUL_CLIENT_INTERFACE=eth0"
+    #     - "CONSUL_LOCAL_CONFIG={\"skip_leave_on_interrupt\": true, \"enable_script_checks\": true, \"server\": true}"
+    #   command: agent -server -dns-port=53 -bootstrap-expect=1 -ui
+    #   ports:
+    #     - "8500:8500"
+    #     - "8600:8600"
+    #
+    # homeassistant:
+    #     hostname: node-1
+    #     image: homeassistant/home-assistant:0.58.1
+    #     tty: true
+    #     ports:
+    #         - 8123:8123
+    #     dns:
+    #         - 8.8.8.8
+    #         - 8.8.4.4
