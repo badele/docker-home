@@ -10,8 +10,9 @@ services:
     container_name: consul
     hostname: ${DOCKER_IP}
     ports:
-    - 8500:8500
+      - 8500:8500
     environment:
+      - SERVICE_8500_NAME=consul
       - SERVICE_8500_CHECK_TCP=true
       - SERVICE_8500_CHECK_INTERVAL=15s
       - SERVICE_8500_CHECK_TIMEOUT=3s
@@ -26,55 +27,73 @@ services:
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
 
-  influxdb:
-    image:  influxdb:1.4.2
-    container_name: influxdb
-    hostname: ${DOCKER_IP}
+  emqttd:
+    image:  devicexx/emqttd:1.1.3
+    container_name: emqttd
+    depends_on:
+      - registrator
     ports:
-    - 8086:8086
+      - 1883:1883
+      - 8883:8883
+      - 8083:8083
+      - 18083:18083
     environment:
-      - INFLUXDB_DB=home_assistant
-      - SERVICE_8086_CHECK_TCP=true
-      - SERVICE_8086_CHECK_INTERVAL=15s
-      - SERVICE_8086_CHECK_TIMEOUT=3s
-    volumes:
-      - /data/docker/influxdb/data:/var/lib/influxdb
+      - SERVICE_1883_NAME=emqttd
+      - SERVICE_1883_CHECK_TCP=true
+      - SERVICE_1883_CHECK_INTERVAL=15s
+      - SERVICE_1883_CHECK_TIMEOUT=3s
+      - SERVICE_8883_NAME=emqttd
+      - SERVICE_8883_CHECK_TCP=true
+      - SERVICE_8883_CHECK_INTERVAL=15s
+      - SERVICE_8883_CHECK_TIMEOUT=3s
+      - SERVICE_8083_NAME=emqttd
+      - SERVICE_8083_CHECK_TCP=true
+      - SERVICE_8083_CHECK_INTERVAL=15s
+      - SERVICE_8083_CHECK_TIMEOUT=3s
+      - SERVICE_18083_NAME=emqttd
+      - SERVICE_18083_CHECK_TCP=true
+      - SERVICE_18083_CHECK_INTERVAL=15s
+      - SERVICE_18083_CHECK_TIMEOUT=3s
+
+  influxdb:
+      image:  influxdb:1.4.2
+      container_name: influxdb
+      hostname: ${DOCKER_IP}
+      ports:
+        - 8086:8086
+      environment:
+        - INFLUXDB_DB=home_assistant
+        - SERVICE_8086_NAME=influxdb
+        - SERVICE_8086_CHECK_TCP=true
+        - SERVICE_8086_CHECK_INTERVAL=15s
+        - SERVICE_8086_CHECK_TIMEOUT=3s
+      volumes:
+        - /data/docker/influxdb/data:/var/lib/influxdb
 
   grafana:
     image:  grafana/grafana:4.6.2
     container_name: grafana
     hostname: ${DOCKER_IP}
+    depends_on:
+      - registrator
     ports:
-    - 3000:3000
+      - 3000:3000
     environment:
+      - SERVICE_3000_NAME=grafana
       - SERVICE_3000_CHECK_TCP=true
       - SERVICE_3000_CHECK_INTERVAL=15s
       - SERVICE_3000_CHECK_TIMEOUT=3s
-#    volumes:
-#      - /data/docker/grafana/dashboards:/data/dashboards
-#      - /data/docker/grafana/etc:/etc/grafana
-#      - /data/docker/grafana/lib:/var/lib/grafana
 
-
-    # consul-n1:
-    #   image: consul:1.0.1
-    #   volumes:
-    #     - "./consul/n1:/consul/config"
-    #   environment:
-    #     - "CONSUL_ALLOW_PRIVILEGED_PORTS="
-    #     - "CONSUL_CLIENT_INTERFACE=eth0"
-    #     - "CONSUL_LOCAL_CONFIG={\"skip_leave_on_interrupt\": true, \"enable_script_checks\": true, \"server\": true}"
-    #   command: agent -server -dns-port=53 -bootstrap-expect=1 -ui
-    #   ports:
-    #     - "8500:8500"
-    #     - "8600:8600"
-    #
-    # homeassistant:
-    #     hostname: node-1
-    #     image: homeassistant/home-assistant:0.58.1
-    #     tty: true
-    #     ports:
-    #         - 8123:8123
-    #     dns:
-    #         - 8.8.8.8
-    #         - 8.8.4.4
+  homeassistant:
+    image:  homeassistant/home-assistant:0.58.1
+    container_name: homeassistant
+    hostname: ${DOCKER_IP}
+    depends_on:
+      - registrator
+    ports:
+      - 8123:8123
+    environment:
+      - SERVICE_8123_NAME=homeassistant
+      - SERVICE_8123_CHECK_TCP=true
+      - SERVICE_8123_CHECK_INTERVAL=15s
+      - SERVICE_8123_CHECK_TIMEOUT=3s
