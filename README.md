@@ -1,6 +1,10 @@
 # docker-home
 Using docker at home
 
+```
+export DOCKER_IP=$(docker info | grep -w 'Node Address' | awk '{print $3}')
+```
+
 # Configure docker in Remote API mode
 Create file `/etc/systemd/system/docker.service.d/override.conf` with this content
 ```
