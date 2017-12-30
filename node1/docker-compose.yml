@@ -1,0 +1,101 @@
+version: '3'
+
+export DH_MYNODENIC=$(ip route | grep default | awk '{ print $5 }' | tail -n1)
+export DH_MYNODEIP=$(ip a s dev ${DH_MYNODENIC} | grep "inet " | awk '{ print $2 }' | cut -d'/' -f1)
+export DH_MYNODENETWORK=$(ip route show dev ${DH_MYNODENIC} | grep "kernel scope" | awk '{ print $1 }')
+
+services:
+
+  consul:
+    image:  gliderlabs/consul-server:0.6
+    command: "-advertise=${DH_MYNODEIP} -server -bootstrap"
+    container_name: consul
+    hostname: ${DH_MYNODEIP}
+    ports:
+      - 8500:8500
+    environment:
+      - SERVICE_8500_NAME=consul
+      - SERVICE_8500_CHECK_TCP=true
+      - SERVICE_8500_CHECK_INTERVAL=15s
+      - SERVICE_8500_CHECK_TIMEOUT=3s
+
+  registrator:
+    image: gliderlabs/registrator:v7
+    command: "-ip ${DH_MYNODEIP} consul://${DH_MYNODEIP}:8500"
+    container_name: registrator
+    hostname: ${DH_MYNODEIP}
+    depends_on:
+    - consul
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+
+  emqttd:
+    image:  devicexx/emqttd:1.1.3
+    container_name: emqttd
+    depends_on:
+      - registrator
+    ports:
+      - 1883:1883
+      - 8883:8883
+      - 8083:8083
+      - 18083:18083
+    environment:
+      - SERVICE_1883_NAME=emqttd
+      - SERVICE_1883_CHECK_TCP=true
+      - SERVICE_1883_CHECK_INTERVAL=15s
+      - SERVICE_1883_CHECK_TIMEOUT=3s
+      - SERVICE_8883_NAME=emqttd
+      - SERVICE_8883_CHECK_TCP=true
+      - SERVICE_8883_CHECK_INTERVAL=15s
+      - SERVICE_8883_CHECK_TIMEOUT=3s
+      - SERVICE_8083_NAME=emqttd
+      - SERVICE_8083_CHECK_TCP=true
+      - SERVICE_8083_CHECK_INTERVAL=15s
+      - SERVICE_8083_CHECK_TIMEOUT=3s
+      - SERVICE_18083_NAME=emqttd
+      - SERVICE_18083_CHECK_TCP=true
+      - SERVICE_18083_CHECK_INTERVAL=15s
+      - SERVICE_18083_CHECK_TIMEOUT=3s
+
+  influxdb:
+      image:  influxdb:1.4.2
+      container_name: influxdb
+      hostname: ${DH_MYNODEIP}
+      ports:
+        - 8086:8086
+      environment:
+        - INFLUXDB_DB=home_assistant
+        - SERVICE_8086_NAME=influxdb
+        - SERVICE_8086_CHECK_TCP=true
+        - SERVICE_8086_CHECK_INTERVAL=15s
+        - SERVICE_8086_CHECK_TIMEOUT=3s
+      volumes:
+        - /data/docker/influxdb/data:/var/lib/influxdb
+
+  grafana:
+    image:  grafana/grafana:4.6.2
+    container_name: grafana
+    hostname: ${DH_MYNODEIP}
+    depends_on:
+      - registrator
+    ports:
+      - 3000:3000
+    environment:
+      - SERVICE_3000_NAME=grafana
+      - SERVICE_3000_CHECK_TCP=true
+      - SERVICE_3000_CHECK_INTERVAL=15s
+      - SERVICE_3000_CHECK_TIMEOUT=3s
+
+  homeassistant:
+    image:  homeassistant/home-assistant:0.58.1
+    container_name: homeassistant
+    hostname: ${DH_MYNODEIP}
+    depends_on:
+      - registrator
+    ports:
+      - 8123:8123
+    environment:
+      - SERVICE_8123_NAME=homeassistant
+      - SERVICE_8123_CHECK_TCP=true
+      - SERVICE_8123_CHECK_INTERVAL=15s
+      - SERVICE_8123_CHECK_TIMEOUT=3s
