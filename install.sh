@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # The script must be running in root

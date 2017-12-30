@@ -1,8 +1,8 @@
 version: '3'
 
-export DH_MYNODENIC=$(ip route | grep default | awk '{ print $5 }' | tail -n1)
-export DH_MYNODEIP=$(ip a s dev ${DH_MYNODENIC} | grep "inet " | awk '{ print $2 }' | cut -d'/' -f1)
-export DH_MYNODENETWORK=$(ip route show dev ${DH_MYNODENIC} | grep "kernel scope" | awk '{ print $1 }')
+#export DH_MYNODENIC=$(ip route | grep default | awk '{ print $5 }' | tail -n1)
+#export DH_MYNODEIP=$(ip a s dev ${DH_MYNODENIC} | grep "inet " | awk '{ print $2 }' | cut -d'/' -f1)
+#export DH_MYNODENETWORK=$(ip route show dev ${DH_MYNODENIC} | grep "kernel scope" | awk '{ print $1 }')
 
 services:
 
