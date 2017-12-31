@@ -16,7 +16,7 @@ homeassistant:
 
 # Store event to influxdb database
 influxdb:
-  host: ${INFLUXDB_SERVER}
+  host: influxdb
 
 # Enables the frontend
 frontend:

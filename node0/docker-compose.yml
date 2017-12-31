@@ -1,9 +1,5 @@
 version: '3'
 
-#export DH_MYNODENIC=$(ip route | grep default | awk '{ print $5 }' | tail -n1)
-#export DH_MYNODEIP=$(ip a s dev ${DH_MYNODENIC} | grep "inet " | awk '{ print $2 }' | cut -d'/' -f1)
-#export DH_MYNODENETWORK=$(ip route show dev ${DH_MYNODENIC} | grep "kernel scope" | awk '{ print $1 }')
-
 services:
 
   consul:
@@ -70,7 +66,7 @@ services:
         - SERVICE_8086_CHECK_INTERVAL=15s
         - SERVICE_8086_CHECK_TIMEOUT=3s
       volumes:
-        - /data/docker/influxdb/data:/var/lib/influxdb
+        - /data/docker/influxdb-${DH_ENV}/data:/var/lib/influxdb
 
   grafana:
     image:  grafana/grafana:4.6.2
@@ -92,8 +88,12 @@ services:
     hostname: ${DH_MYNODEIP}
     depends_on:
       - registrator
+      - influxdb
     ports:
       - 8123:8123
+    volumes:
+      - /data/docker/homeassistant-${DH_ENV}/data:/config 
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - SERVICE_8123_NAME=homeassistant
       - SERVICE_8123_CHECK_TCP=true

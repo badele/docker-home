@@ -16,25 +16,37 @@ fi
 
 # Load lib and environment vars
 SRC="`( cd $(dirname \"$0\") && pwd )`"
-source ./nodes.env
+
+# Export nodes variables
+set -a
+source ./nodes.env $1
+set +a
+
 source ./lib.sh
 
 # Search current node installation
-
 selectednode=-1
 for nodeidx in ${!DH_NODENAME[*]}
 do
-  echo "## $(hostname)" == "${DH_NODENAME[${nodeidx}]}"
   if [ "$(hostname)" == "${DH_NODENAME[${nodeidx}]}" ]; then
     selectednode=$nodeidx
   fi
 done
 
 if [ $selectednode -eq -1 ];then
-  echo "No need install"
+  echo "No install needed here"
   exit 0
 fi
 
-echo "Verify node${selectednode} docker compose configuration"
+# Sync files
 cd node${selectednode}
-docker-compose config
+if [ "$DH_ENV" == "public" ]; then
+	for dirname in $(ls -d */); do
+		dirname=${dirname%%/};
+		rsync -avr --update "${dirname}/" "/data/docker/${dirname}-${DH_ENV}"
+	done
+fi
+
+
+# Launching containers
+docker-compose up -d
