@@ -47,7 +47,9 @@ links:
   name: Links
   entities:
     - weblink.google
-    - weblink.my_computer
+    - weblink.consul_server
+    - weblink.grafana_server
+    - weblink.emqttd_server
 
 ## VIEWS ##
 

@@ -26,7 +26,8 @@ services:
     - /var/run/docker.sock:/tmp/docker.sock
 
   emqttd:
-    image:  devicexx/emqttd:1.1.3
+    #image:  devicexx/emqttd:1.1.3
+    build: https://github.com/emqtt/emq-docker.git
     container_name: emqttd
     depends_on:
       - registrator
@@ -92,7 +93,7 @@ services:
     ports:
       - 8123:8123
     volumes:
-      - /data/docker/homeassistant-${DH_ENV}/data:/config 
+      - /data/docker/homeassistant-${DH_ENV}/config:/config 
       - /etc/localtime:/etc/localtime:ro
     environment:
       - SERVICE_8123_NAME=homeassistant

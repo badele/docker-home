@@ -148,16 +148,16 @@ binary_sensor:
 
 device_tracker:
   - platform: nmap_tracker
-    hosts: ${NETWORK}
+    hosts: ${DH_MYNODENETWORK}
 
 weblink:
   entities:
-    - name: Google
-      url: http://google.com/
-    - name: My Computer
-      url: http://127.0.0.1
-
-
+    - name: Consul server
+      url: http://${DH_MYNODEIP}:8500
+    - name: Grafana server
+      url: http://${DH_MYNODEIP}:3000
+    - name: EMQTTD server
+      url: http://${DH_MYNODEIP}:18083
 
 # Text to speech
 tts:
