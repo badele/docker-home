@@ -91,11 +91,37 @@ services:
       - registrator
       - influxdb
     ports:
-      - 8123:8123
+      - 80:8123
     volumes:
       - /data/docker/homeassistant-${DH_ENV}/config:/config 
       - /etc/localtime:/etc/localtime:ro
     environment:
+      - SERVICE_8123_NAME=homeassistant
+      - SERVICE_8123_CHECK_TCP=true
+      - SERVICE_8123_CHECK_INTERVAL=15s
+      - SERVICE_8123_CHECK_TIMEOUT=3s
+
+  zoneminder:
+    container_name: zoneminder
+    hostname: ${DH_MYNODEIP}
+    build: 
+      context: ./zoneminder
+      args:
+        - DH_ENV=${DH_ENV}
+        - DH_NODE=${DH_NODE}
+    tty: true
+    depends_on:
+      - registrator
+    ports:
+      - 1080:80
+    shm_size: 256m
+    volumes:
+      - /data/docker/zoneminder-${DH_ENV}/events:/var/lib/zoneminder/events
+      - /data/docker/zoneminder-${DH_ENV}/images:/var/lib/zoneminder/images
+      - /data/docker/zoneminder-${DH_ENV}/mysql:/var/lib/mysql
+      - /data/docker/zoneminder-${DH_ENV}/logs:/var/log/zm
+    environment:
+      - PHP_TIMEZONE=Europe/Paris
       - SERVICE_8123_NAME=homeassistant
       - SERVICE_8123_CHECK_TCP=true
       - SERVICE_8123_CHECK_INTERVAL=15s

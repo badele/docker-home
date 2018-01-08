@@ -19,7 +19,7 @@ fi
 
 # Export nodes variables
 set -a
-source ./nodes.env $1
+source ./$1.env $1
 set +a
 
 #source ./lib.sh
@@ -36,30 +36,35 @@ if [ $selectednode -eq -1 ];then
   echo "No install needed here"
   exit 0
 fi
-ROOTNODE=node${selectednode}
+
+# Set Node id
+set -a
+DH_NODE=node${selectednode}
+set +a
 
 # Copy node configurations to temporary file
-mkdir -p "$TMPDIR"
-rsync -avr --delete --exclude docker-compose.yml "${ROOTNODE}/" "${TMPDIR}/${ROOTNODE}"
+TPLDEST="${TMPDIR}/${DH_NODE}/${DH_ENV}"
+mkdir -p "${TPLDEST}"
+rsync -avr --delete --exclude docker-compose.yml --exclude tmp/ "${DH_NODE}/" "${TPLDEST}"
 
 # Replace all variables
-for filename in $(find "${TMPDIR}/${ROOTNODE}" -type f); do
+for filename in $(find "${TPLDEST}" -type f); do
 	envsubst < "$filename" > "${filename}.bak"
 	mv "${filename}.bak" "${filename}"
 done
 
 # Sync configurations to docker destination
-cd "${TMPDIR}/${ROOTNODE}"
-if [ "$DH_ENV" == "public" ]; then
-	cd "${TMPDIR}/${ROOTNODE}"
-fi
+cd "${TPLDEST}"
+
+# Docker don"t support ADD/COPY absolute path
 for dirname in $(ls -d */); do
 	dirname=${dirname%%/};
-	mkdir -p "/data/docker/${dirname}-${DH_ENV}"
-	rsync -avr --update "${dirname}/" "/data/docker/${dirname}-${DH_ENV}"
+	mkdir -p "$SRC/${DH_NODE}/${dirname}/tmp/${DH_ENV}"
+	rsync -avr --delete "${dirname}/" "$SRC/${DH_NODE}/${dirname}/tmp/${DH_ENV}"
 done
 
 # Launching containers
-cd "${SRC}/${ROOTNODE}"
+cd "${SRC}/${DH_NODE}"
 docker-compose down
-docker-compose up -d
+docker-compose config
+docker-compose up --build zoneminder
