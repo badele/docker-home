@@ -94,17 +94,13 @@ camera 6:
 
 camera 7:
   - platform: mjpeg
-    mjpeg_url: http://96.10.1.168/mjpg/1/video.mjpg
+    mjpeg_url: http://92.223.183.218:8082/mjpg/video.mjpg
 
 camera 8:
   - platform: mjpeg
-    mjpeg_url: http://50.198.255.22:8084/record/current.jpg?rand=999999
-
-camera 9:
-  - platform: mjpeg
     mjpeg_url: http://81.187.169.211/mjpg/quad/video.mjpg
 
-camera 10:
+camera 9:
   - platform: mjpeg
     mjpeg_url: http://145.238.185.10/jpg/1/image.jpg
 

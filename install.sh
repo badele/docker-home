@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 TMPDIR="/tmp/docker-home"
 SRC="$( (cd $(dirname "$0") && pwd))"
