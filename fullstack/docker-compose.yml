@@ -8,7 +8,7 @@ services:
     container_name: consul
     hostname: ${DH_IPCONSUL}
     ports:
-      - 8500:8500
+      - 80:8500
     environment:
       - SERVICE_8500_NAME=consul
       - SERVICE_8500_CHECK_TCP=true
@@ -17,7 +17,7 @@ services:
 
   registrator:
     image: gliderlabs/registrator:v7
-    command: "-ip ${DH_IPREGISTRATOR} consul://${DH_IPREGISTRATOR}:8500"
+    command: "-ip ${DH_IPREGISTRATOR} consul://${DH_IPREGISTRATOR}:80"
     container_name: registrator
     hostname: ${DH_IPREGISTRATOR}
     depends_on:
@@ -67,7 +67,7 @@ services:
         - SERVICE_8086_CHECK_INTERVAL=15s
         - SERVICE_8086_CHECK_TIMEOUT=3s
       volumes:
-        - ${DH_DSTDOCKER}/influxdb-${DH_NODE}-${DH_ENV}/data:/var/lib/influxdb
+        - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/influxdb/data:/var/lib/influxdb
 
   grafana:
     image:  grafana/grafana:4.6.2
@@ -91,9 +91,9 @@ services:
       - registrator
       - influxdb
     ports:
-      - 80:8123
+      - 8123:8123
     volumes:
-      - ${DH_DSTDOCKER}/homeassistant-${DH_NODE}-${DH_ENV}/config:/config 
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/homeassistant/config:/config 
       - /etc/localtime:/etc/localtime:ro
     environment:
       - SERVICE_8123_NAME=homeassistant
@@ -101,28 +101,28 @@ services:
       - SERVICE_8123_CHECK_INTERVAL=15s
       - SERVICE_8123_CHECK_TIMEOUT=3s
 
-  zoneminder:
-    container_name: zoneminder
-    hostname: ${DH_IPZONEMINDER}
-    build: 
-      context: ${DH_DSTDOCKER}/zoneminder-${DH_NODE}-${DH_ENV}
-      args:
-        - DH_ENV=${DH_ENV}
-        - DH_NODE=${DH_NODE}
-    tty: true
-    depends_on:
-      - registrator
-    ports:
-      - 1080:80
-    shm_size: 256m
-    volumes:
-      - ${DH_DSTDOCKER}/zoneminder-${DH_NODE}-${DH_ENV}/events:/var/lib/zoneminder/events
-      - ${DH_DSTDOCKER}/zoneminder-${DH_NODE}-${DH_ENV}/images:/var/lib/zoneminder/images
-      - ${DH_DSTDOCKER}/zoneminder-${DH_NODE}-${DH_ENV}/mysql:/var/lib/mysql
-      - ${DH_DSTDOCKER}/zoneminder-${DH_NODE}-${DH_ENV}/logs:/var/log/zm
-    environment:
-      - PHP_TIMEZONE=Europe/Paris
-      - SERVICE_8123_NAME=homeassistant
-      - SERVICE_8123_CHECK_TCP=true
-      - SERVICE_8123_CHECK_INTERVAL=15s
-      - SERVICE_8123_CHECK_TIMEOUT=3s
+  #zoneminder:
+    #container_name: zoneminder
+    #hostname: ${DH_IPZONEMINDER}
+    #build: 
+      #context: ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder
+      #args:
+        #- DH_ENV=${DH_ENV}
+        #- DH_NODE=${DH_NODE}
+    #tty: true
+    #depends_on:
+      #- registrator
+    #ports:
+      #- 1080:80
+    #shm_size: 256m
+    #volumes:
+      #- ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/events:/var/lib/zoneminder/events
+      #- ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/images:/var/lib/zoneminder/images
+      #- ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/mysql:/var/lib/mysql
+      #- ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/logs:/var/log/zm
+    #environment:
+      #- PHP_TIMEZONE=Europe/Paris
+      #- SERVICE_8123_NAME=homeassistant
+      #- SERVICE_8123_CHECK_TCP=true
+      #- SERVICE_8123_CHECK_INTERVAL=15s
+      #- SERVICE_8123_CHECK_TIMEOUT=3s

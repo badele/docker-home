@@ -4,7 +4,7 @@ MAINTAINER Bruno Adele <bruno@adele.im>
 ARG DH_ENV
 ARG DH_NODE
 
-ADD tmp/${DH_ENV}/utils/docker/ /ZoneMinder/utils/docker/
+ADD utils/docker/ /ZoneMinder/utils/docker/
 RUN chmod 755 /ZoneMinder/utils/docker/setup.sh
 
 # Expose http port
