@@ -83,7 +83,7 @@ camera 4:
 camera 5:
   - platform: generic
     name: ISS
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue1
     limit_refetch_to_url_change: true
 
 camera 6:
@@ -129,12 +129,12 @@ sensor:
       - temperature
 
   - platform: rest
-    resource: http://127.0.0.1:8500/v1/internal/ui/services
+    resource: http://${DH_MYNODEIP}:8500/v1/internal/ui/services
     name: Consul Passing
     value_template: '{{ value_json[0]["ChecksPassing"] }}'
 
   - platform: rest
-    resource: http://127.0.0.1:8500/v1/internal/ui/services
+    resource: http://${DH_MYNODEIP}:8500/v1/internal/ui/services
     name: Consul Critical/Warning
     value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] }}'
 
