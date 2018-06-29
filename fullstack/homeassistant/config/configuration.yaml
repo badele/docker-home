@@ -83,7 +83,7 @@ camera 4:
 camera 5:
   - platform: generic
     name: ISS
-    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue1
+    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue1
     limit_refetch_to_url_change: true
 
 camera 6:
