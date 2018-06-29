@@ -60,4 +60,5 @@ done
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}-${DH_ENV}-docker-compose.yml" down
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}-${DH_ENV}-docker-compose.yml" config
 #docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}-${DH_ENV}-docker-compose.yml" up --build zoneminder
+docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}-${DH_ENV}-docker-compose.yml" build
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}-${DH_ENV}-docker-compose.yml" up
