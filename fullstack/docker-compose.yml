@@ -87,6 +87,9 @@ services:
     image:  homeassistant/home-assistant:0.58.1
     container_name: homeassistant
     hostname: ${DH_IPHOMEASSISTANT}
+    
+    # For Mac address detection (nmap) / device tracker
+    network_mode: "host"
     depends_on:
       - registrator
       - influxdb

@@ -11,6 +11,7 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/Paris
+
   # Customization file
   customize: !include customize.yaml
 
@@ -37,7 +38,7 @@ http:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
+  include_used_components: true
 
 # Discover some devices automatically
 discovery:
@@ -79,18 +80,17 @@ camera 4:
   still_image_url: http://www.meteociel.fr/prevision/prev3.png
   name: mcn+3
 
-
 camera 5:
-  - platform: generic
-    name: ISS
-    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue1
-    limit_refetch_to_url_change: true
-
-camera 6:
   - platform: generic
     name: Montpellier
     still_image_url: https://www.yr.no/place/France/Languedoc-Roussillon/Montpellier/meteogram.svg
     content_type: 'image/svg+xml'
+
+camera 6:
+  - platform: generic
+    name: ISS
+    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue
+    limit_refetch_to_url_change: true
 
 camera 7:
   - platform: mjpeg
@@ -105,7 +105,6 @@ camera 9:
     mjpeg_url: http://145.238.185.10/jpg/1/image.jpg
 
 
-# Weather prediction
 sensor:
   - platform: moon
 
@@ -113,20 +112,23 @@ sensor:
     name: yr
 #    forecast: 6
     monitored_conditions:
+      - temperature
       - symbol
-      - temperature
       - precipitation
+      - windSpeed
       - humidity
+      - fog
+      - cloudiness
 
-  - platform: yweather
-    name: yweather
-    monitored_conditions:
-      - weather
-      - weather_current
-      - wind_speed
-      - visibility
-      - humidity
-      - temperature
+  #- platform: yweather
+    #name: yweather
+    #monitored_conditions:
+      #- weather
+      #- weather_current
+      #- wind_speed
+      #- visibility
+      #- humidity
+      #- temperature
 
   - platform: rest
     resource: http://${DH_MYNODEIP}:8500/v1/internal/ui/services
@@ -145,6 +147,9 @@ binary_sensor:
 device_tracker:
   - platform: nmap_tracker
     hosts: ${DH_MYNODENETWORK}
+    #track_new_devices: yes
+    #new_device_defaults:
+      #track_new_devices: True
 
 weblink:
   entities:

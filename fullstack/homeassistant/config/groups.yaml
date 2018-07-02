@@ -8,23 +8,25 @@ misc:
 weather_yr:
   name: yr Weather
   entities:
-    - sensor.yr_symbol
-    - sensor.yr_temperature
-    - sensor.yr_precipitation
+    #- sensor.yr_symbol
+    # - sensor.yr_temperature
+    # - sensor.yr_precipitation
     - sensor.yr_humidity
+    - sensor.yr_cloudiness
+    - sensor.yr_fog
 
-weather_yweather:
-  name: yweather Weather
-  entities:
-    - sensor.yweather_condition
-    - sensor.yweather_current
-    - sensor.yweather_humidity
-    - sensor.yweather_pressure
-    - sensor.yweather_temperature
-    - sensor.yweather_temperature_max
-    - sensor.yweather_temperature_min
-    - sensor.yweather_visibility
-    - sensor.yweather_wind_speed
+#weather_yweather:
+  #name: yweather Weather
+  #entities:
+    #- sensor.yweather_condition
+    #- sensor.yweather_current
+    #- sensor.yweather_humidity
+    #- sensor.yweather_pressure
+    #- sensor.yweather_temperature
+    #- sensor.yweather_temperature_max
+    #- sensor.yweather_temperature_min
+    #- sensor.yweather_visibility
+    #- sensor.yweather_wind_speed
 
 
 weather_camera:
