@@ -50,8 +50,8 @@ links:
   entities:
     - weblink.google
     - weblink.consul_server
-    - weblink.grafana_server
-    - weblink.emqttd_server
+    - weblink.grafana_serveradminadmin
+    - weblink.emqttd_serveradminpublic
 
 ## VIEWS ##
 
