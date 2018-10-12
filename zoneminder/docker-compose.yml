@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  zoneminder:
+    container_name: zoneminder
+    hostname: ${DH_IPZONEMINDER}
+    build: 
+      context: ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder
+      args:
+        - DH_ENV=${DH_ENV}
+        - DH_NODE=${DH_NODE}
+    tty: true
+    depends_on:
+      - registrator
+    ports:
+      - 1080:80
+    shm_size: 256m
+    volumes:
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/events:/var/lib/zoneminder/events
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/images:/var/lib/zoneminder/images
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/mysql:/var/lib/mysql
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/zoneminder/logs:/var/log/zm
+    environment:
+      - PHP_TIMEZONE=Europe/Paris
+      - SERVICE_8123_NAME=homeassistant
+      - SERVICE_8123_CHECK_TCP=true
+      - SERVICE_8123_CHECK_INTERVAL=15s
+      - SERVICE_8123_CHECK_TIMEOUT=3s

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  influxdb:
+      image:  influxdb:1.4.2
+      container_name: influxdb
+      hostname: ${DH_IPINFLUXDB}
+      ports:
+        - 8086:8086
+      environment:
+        - INFLUXDB_DB=home_assistant
+        - SERVICE_8086_NAME=influxdb
+        - SERVICE_8086_CHECK_TCP=true
+        - SERVICE_8086_CHECK_INTERVAL=15s
+        - SERVICE_8086_CHECK_TIMEOUT=3s
+      volumes:
+        - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/influxdb/data:/var/lib/influxdb

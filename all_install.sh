@@ -9,4 +9,4 @@ function sleeping() {
 
 sudo ./install.sh public consul
 sleeping 10 "Consul"
-#sudo ./install.sh public emqttd
+sudo ./install.sh public emqttd

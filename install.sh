@@ -52,9 +52,17 @@ done
 mkdir -p "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}"
 rsync -avr --ignore-existing "${TPLDEST}/" "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/"
 
+
 # Launching containers
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" config
 #docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up --build zoneminder
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" build
+
+# Create public_default docker network
+docker network ls | grep public_default > /dev/null
+if [ $? -eq 1 ]; then
+	docker network create public_default
+fi
+docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" create
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" start

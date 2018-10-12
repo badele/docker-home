@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  grafana:
+    image:  grafana/grafana:4.6.2
+    container_name: grafana
+    hostname: ${DH_IPGRAFANA}
+    ports:
+      - 3000:3000
+    environment:
+      - SERVICE_3000_NAME=grafana
+      - SERVICE_3000_CHECK_TCP=true
+      - SERVICE_3000_CHECK_INTERVAL=15s
+      - SERVICE_3000_CHECK_TIMEOUT=3s

@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+
+  homeassistant:
+    image:  homeassistant/home-assistant:0.58.1
+    container_name: homeassistant
+    hostname: ${DH_IPHOMEASSISTANT}
+    
+    # For Mac address detection (nmap) / device tracker
+    network_mode: "host"
+    ports:
+      - 8123:8123
+    volumes:
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/config:/config 
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - SERVICE_8123_NAME=homeassistant
+      - SERVICE_8123_CHECK_TCP=true
+      - SERVICE_8123_CHECK_INTERVAL=15s
+      - SERVICE_8123_CHECK_TIMEOUT=3s
