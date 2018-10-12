@@ -2,29 +2,6 @@ version: '3'
 
 services:
 
-  consul:
-    image:  gliderlabs/consul-server:0.6
-    command: "-advertise=${DH_IPCONSUL} -server -bootstrap"
-    container_name: consul
-    hostname: ${DH_IPCONSUL}
-    ports:
-      - 80:8500
-    environment:
-      - SERVICE_8500_NAME=consul
-      - SERVICE_8500_CHECK_TCP=true
-      - SERVICE_8500_CHECK_INTERVAL=15s
-      - SERVICE_8500_CHECK_TIMEOUT=3s
-
-  registrator:
-    image: gliderlabs/registrator:v7
-    command: "-ip ${DH_IPREGISTRATOR} consul://${DH_IPREGISTRATOR}:80"
-    container_name: registrator
-    hostname: ${DH_IPREGISTRATOR}
-    depends_on:
-    - consul
-    volumes:
-    - /var/run/docker.sock:/tmp/docker.sock
-
   emqttd:
     #image:  devicexx/emqttd:1.1.3
     build: https://github.com/emqtt/emq-docker.git

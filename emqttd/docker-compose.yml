@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  emqttd:
+    #image:  devicexx/emqttd:1.1.3
+    build: https://github.com/emqtt/emq-docker.git
+    container_name: emqttd
+    ports:
+      - 1883:1883
+      - 8883:8883
+      - 8083:8083
+      - 18083:18083
+    environment:
+      - SERVICE_1883_NAME=emqttd
+      - SERVICE_1883_CHECK_TCP=true
+      - SERVICE_1883_CHECK_INTERVAL=15s
+      - SERVICE_1883_CHECK_TIMEOUT=3s
+      - SERVICE_8883_NAME=emqttd
+      - SERVICE_8883_CHECK_TCP=true
+      - SERVICE_8883_CHECK_INTERVAL=15s
+      - SERVICE_8883_CHECK_TIMEOUT=3s
+      - SERVICE_8083_NAME=emqttd
+      - SERVICE_8083_CHECK_TCP=true
+      - SERVICE_8083_CHECK_INTERVAL=15s
+      - SERVICE_8083_CHECK_TIMEOUT=3s
+      - SERVICE_18083_NAME=emqttd
+      - SERVICE_18083_CHECK_TCP=true
+      - SERVICE_18083_CHECK_INTERVAL=15s
+      - SERVICE_18083_CHECK_TIMEOUT=3s

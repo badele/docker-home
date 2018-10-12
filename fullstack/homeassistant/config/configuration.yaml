@@ -17,7 +17,7 @@ homeassistant:
 
 # Store event to influxdb database
 influxdb:
-  host: influxdb
+  host: ${DH_MYNODEIP}
 
 # Enables the frontend
 frontend:
@@ -86,11 +86,11 @@ camera 5:
     still_image_url: https://www.yr.no/place/France/Languedoc-Roussillon/Montpellier/meteogram.svg
     content_type: 'image/svg+xml'
 
-camera 6:
-  - platform: generic
-    name: ISS
-    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue
-    limit_refetch_to_url_change: true
+# camera 6:
+#   - platform: generic
+#     name: ISS
+#     still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue
+#     limit_refetch_to_url_change: true
 
 camera 7:
   - platform: mjpeg

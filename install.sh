@@ -34,6 +34,9 @@ if [ "$(realpath $DH_DSTDOCKER)" = "/" ]; then
 	exit 1
 fi
 
+# Create DH_DSTDOCKER Directory
+mkdir -p $DH_DSTDOCKER
+
 # Copy node configurations to temporary file
 TPLDEST="${TMPDIR}/${DH_NODE}/${DH_ENV}"
 mkdir -p "${TPLDEST}"
@@ -45,23 +48,13 @@ for filename in $(find "${TPLDEST}" -type f); do
 	mv "${filename}.bak" "${filename}"
 done
 
-#cp "${TPLDEST}/docker-compose.yml" "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}"
-
 # Sync configurations to docker destination
-#cd "${TPLDEST}"
 mkdir -p "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}"
 rsync -avr --ignore-existing "${TPLDEST}/" "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/"
-
-# Docker don't support ADD/COPY absolute path
-#for dirname in $(ls -d */); do
-#dirname=${dirname%%/}
-##mkdir -p "${DH_DSTDOCKER}/${dirname}-${DH_NODE}-${DH_ENV}"
-#rsync -avr --ignore-existing "${dirname}/" "${DH_DSTDOCKER}/${dirname}-${DH_NODE}-${DH_ENV}"
-#done
 
 # Launching containers
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" config
 #docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up --build zoneminder
 docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" build
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up
+docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" start
