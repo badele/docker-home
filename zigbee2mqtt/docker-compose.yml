@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+
+  zigbee2mqtt:
+    image:  koenkk/zigbee2mqtt:0.1.6
+    container_name: zigbee2mqtt
+    hostname: ${DH_IPZIGBEE2MQTT}
+    
+    # For Mac address detection (nmap) / device tracker
+    network_mode: "host"
+    volumes:
+      - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/data:/app/data 
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"

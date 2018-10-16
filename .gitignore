@@ -1,3 +1,5 @@
+zigbee2mqtt/data
 PRIVATE/
 secrets.yaml
+private.env
 tmp

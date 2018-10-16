@@ -7,6 +7,11 @@ function sleeping() {
     sleep 10
 }
 
-sudo ./install.sh public consul
-sleeping 10 "Consul"
-sudo ./install.sh public emqttd
+sudo ./stop_node $1 consul
+sudo ./stop_node $1 homeassistant
+sudo ./stop_node $1 zigbee2mqtt
+sudo ./stop_node $1 grafana
+sudo ./stop_node $1 influxdb
+sudo ./stop_node $1 emqttd
+
+

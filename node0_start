@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function sleeping() {
+	echo "##########################################################"
+	echo "# Sleep during ${1}s for ${2} service"
+	echo "##########################################################"
+	sleep 10
+}
+
+# The script must be running in root
+if [ "$(whoami)" != "root" ]; then
+	echo "Please run in root"
+	exit 0
+fi
+
+# Select docker environment
+if [ -z "$1" ]; then
+	echo "Usage:"
+	echo "$0 environment"
+	echo "ex: $0 private/public"
+	exit 0
+fi
+
+if [ "$1" == "public" ]; then
+	sudo ./start_node $1 consul
+	sleeping 10 "Consul"
+	sudo ./start_node $1 emqttd
+	sudo ./start_node $1 influxdb
+	sudo ./start_node $1 grafana
+	sudo ./start_node $1 homeassistant
+	# sudo ./start_node $1 zigbee2mqtt
+elif [ "$1" == "private" ]; then
+	sudo ./start_node $1 consul
+	sleeping 10 "Consul"
+	sudo ./start_node $1 emqttd
+	sudo ./start_node $1 influxdb
+	# sudo ./start_node $1 grafana
+	sudo ./start_node $1 homeassistant
+	sudo ./start_node $1 zigbee2mqtt
+fi

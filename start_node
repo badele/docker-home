@@ -13,7 +13,7 @@ fi
 if [ "$2" == "" ]; then
 	echo "Usage:"
 	echo "$0 environment nodename"
-	echo "ex: $0 private/public fullstack"
+	echo "ex: $0 private/public homeassistant"
 	exit 0
 fi
 
@@ -26,6 +26,8 @@ fi
 set -a
 source ./$1.env $1
 set +a
+
+
 export DH_NODE="$2"
 
 # Root remove protection
@@ -37,10 +39,19 @@ fi
 # Create DH_DSTDOCKER Directory
 mkdir -p $DH_DSTDOCKER
 
-# Copy node configurations to temporary file
+# Copy node configurations to temporary file (overide files layers)
 TPLDEST="${TMPDIR}/${DH_NODE}/${DH_ENV}"
 mkdir -p "${TPLDEST}"
-rsync -avr --delete "${DH_NODE}/" "${TPLDEST}"
+COUNTER=0
+for path_env in ${DH_PATHENV[*]}; do
+	if [ $COUNTER -eq 0 ]; then
+		DELETE="--delete"
+	else
+		DELETE=""
+	fi
+	rsync -avr $DELETE "$path_env/${DH_NODE}/" "${TPLDEST}"
+	COUNTER=$((COUNTER+1))
+done
 
 # Replace all variables
 for filename in $(find "${TPLDEST}" -type f); do
@@ -52,17 +63,16 @@ done
 mkdir -p "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}"
 rsync -avr --ignore-existing "${TPLDEST}/" "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/"
 
-
 # Launching containers
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" config
-#docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up --build zoneminder
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" build
+echo docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down --remove-orphans
+docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" config
+#docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up --build zoneminder
+docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" build
 
 # Create public_default docker network
 docker network ls | grep public_default > /dev/null
 if [ $? -eq 1 ]; then
 	docker network create public_default
 fi
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" create
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" start
+docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" create
+docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" start
