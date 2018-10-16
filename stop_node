@@ -34,4 +34,4 @@ if [ "$(realpath $DH_DSTDOCKER)" = "/" ]; then
 	exit 1
 fi
 
-docker-compose -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
+docker-compose -p $DH_ENV-${DH_NODE} -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
