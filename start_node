@@ -49,7 +49,10 @@ for path_env in ${DH_PATHENV[*]}; do
 	else
 		DELETE=""
 	fi
-	rsync -avr $DELETE "$path_env/${DH_NODE}/" "${TPLDEST}"
+
+	if [ -d "$path_env/${DH_NODE}" ]; then
+		rsync -avr $DELETE "$path_env/${DH_NODE}/" "${TPLDEST}"
+	fi
 	COUNTER=$((COUNTER+1))
 done
 
@@ -64,15 +67,20 @@ mkdir -p "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}"
 rsync -avr --ignore-existing "${TPLDEST}/" "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/"
 
 # Launching containers
-echo docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down --remove-orphans
-docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" config
-#docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" up --build zoneminder
-docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" build
-
-# Create public_default docker network
-docker network ls | grep public_default > /dev/null
-if [ $? -eq 1 ]; then
-	docker network create public_default
+DCOMPOSE="docker-compose -p ${DH_ENV}-${DH_NODE} -f ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml"
+COUNT=$($DCOMPOSE ps -q | wc -l)
+if [ "$COUNT" == "0" ]; then
+	$DCOMPOSE down
 fi
-docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" create
-docker-compose -p $DH_ENV -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" start
+
+# $DCOMPOSE config
+#$DCOMPOSE up --build zoneminder
+$DCOMPOSE build
+
+# # Create public_default docker network
+# docker network ls | grep public_default > /dev/null
+# if [ $? -eq 1 ]; then
+# 	docker network create public_default
+# fi
+# $DCOMPOSE create
+$DCOMPOSE up -d

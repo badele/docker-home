@@ -2,6 +2,13 @@
 
 TMPDIR="/tmp/docker-home"
 SRC="$( (cd $(dirname "$0") && pwd))"
+DEBUG=0
+
+DRYRUN=""
+if [ $DEBUG -eq 1 ]; then
+	DRYRUN="echo"
+fi
+
 
 # The script must be running in root
 if [ "$(whoami)" != "root" ]; then
@@ -34,4 +41,11 @@ if [ "$(realpath $DH_DSTDOCKER)" = "/" ]; then
 	exit 1
 fi
 
-docker-compose -p $DH_ENV-${DH_NODE} -f "${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml" down
+DCOMPOSE="$DRYRUN docker-compose -p ${DH_ENV}-${DH_NODE} -f ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/docker-compose.yml"
+COUNT=$($DCOMPOSE ps -q | wc -l)
+if [ "$COUNT" == "0" ]; then
+	$DCOMPOSE down
+fi
+
+$DCOMPOSE ps -q
+$DCOMPOSE down

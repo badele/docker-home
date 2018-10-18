@@ -140,6 +140,12 @@ sensor:
     name: Consul Critical/Warning
     value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] }}'
 
+  - platform: rest
+    resource: https://api.exchangeratesapi.io/latest?symbols=USD
+    name: USD currency
+    value_template: '{{ value_json["rates"]["USD"] }}'
+
+
 binary_sensor:
   - platform: iss
     show_on_map: true
