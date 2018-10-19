@@ -133,17 +133,34 @@ sensor:
   - platform: rest
     resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
     name: Consul Passing
-    value_template: '{{ value_json[0]["ChecksPassing"] }}'
+    value_template: '{{ value_json[0]["ChecksPassing"] | int }}'
 
   - platform: rest
     resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
     name: Consul Critical/Warning
-    value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] }}'
+    value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] | int }}'
 
   - platform: rest
     resource: https://api.exchangeratesapi.io/latest?symbols=USD
     name: USD currency
-    value_template: '{{ value_json["rates"]["USD"] }}'
+    value_template: '{{ value_json["rates"]["USD"] | float }}'
+
+
+  - platform: rest
+    resource: https://api.carbonintensity.org.uk/intensity
+    name: Carbon Intensity
+    value_template: '{{ value_json["data"][0]["intensity"]["actual"] | float }}'
+
+  # - platform: rest
+  #   resource: https://financialmodelingprep.com/api/company/price/INTC
+  #   name: Intel Stock
+  #   value_template: '{{ value_json["INTC"]["price"] | float }}'
+
+  # - platform: rest
+  #   resource: https://financialmodelingprep.com/api/cryptocurrency/BTC
+  #   name: BTC Price
+  #   value_template: '{{ value_json["BTC"]["Price"] | int }}'
+
 
 
 binary_sensor:
@@ -169,6 +186,14 @@ weblink:
 # Text to speech
 tts:
   - platform: google
+
+history_graph:
+  gr1:
+    entities:
+      - sensor.carbon_intensity
+  gr2:
+    entities:
+      - sensor.usd_currency
 
 group: !include groups.yaml
 automation: !include automations.yaml

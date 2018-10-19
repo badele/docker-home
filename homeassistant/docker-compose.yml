@@ -4,7 +4,7 @@ services:
 
 
   homeassistant:
-    image:  homeassistant/home-assistant:0.58.1
+    image:  homeassistant/home-assistant:0.80.3
     container_name: homeassistant
     hostname: ${DH_IPHOMEASSISTANT}
     
