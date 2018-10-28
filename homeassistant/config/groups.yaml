@@ -37,6 +37,7 @@ weather_camera:
     - camera.mcn2
     - camera.mcn3
     - camera.mcn4
+    - camera.mcn5
 
 servers:
   name: Servers

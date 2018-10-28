@@ -81,26 +81,31 @@ camera 4:
   name: mcn+3
 
 camera 5:
+  platform: generic
+  still_image_url: http://www.meteociel.fr/prevision/prev4.png
+  name: mcn+4
+
+camera 6:
+  platform: generic
+  still_image_url: http://www.meteociel.fr/prevision/prev5.png
+  name: mcn+5
+
+
+camera 7:
   - platform: generic
     name: Montpellier
     still_image_url: https://www.yr.no/place/France/Languedoc-Roussillon/Montpellier/meteogram.svg
     content_type: 'image/svg+xml'
 
-# camera 6:
-#   - platform: generic
-#     name: ISS
-#     still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.latitude }},{{ states.binary_sensor.iss.attributes.longitude }},lightblue
-#     limit_refetch_to_url_change: true
-
-camera 7:
+camera 8:
   - platform: mjpeg
     mjpeg_url: http://92.223.183.218:8082/mjpg/video.mjpg
 
-camera 8:
+camera 9:
   - platform: mjpeg
     mjpeg_url: http://81.187.169.211/mjpg/quad/video.mjpg
 
-camera 9:
+camera 10:
   - platform: mjpeg
     mjpeg_url: http://145.238.185.10/jpg/1/image.jpg
 

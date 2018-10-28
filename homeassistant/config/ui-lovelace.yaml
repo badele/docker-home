@@ -1,0 +1,98 @@
+title: My Docker Home
+resources:
+  - url: /local/my-custom-card.js
+    type: js
+  - url: /local/my-webfont.css
+    type: css
+
+views:
+  - icon: mdi:camera
+    title: Webcam
+    id: Webcam
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: picture-glance
+            title: Paris
+            image:
+            camera_image: camera.mjpeg_camera_2
+            entities:
+              -  binary_sensor.iss
+              - sensor.yr_temperature
+              - sensor.yr_wind_speed
+              - sensor.yr_cloudiness
+              - camera.mjpeg_camera_1
+          - type: horizontal-stack
+            cards:
+              - type: picture-glance
+                title: London
+                image:
+                camera_image: camera.mjpeg_camera
+                entities:
+                  - sensor.yr_temperature
+                  - camera.mjpeg_camera_3
+              - type: picture-glance
+                title: Milan
+                image:
+                camera_image: camera.mjpeg_camera_3
+                entities:
+                  - sensor.yr_temperature
+                  - camera.mjpeg_camera
+
+  - icon: mdi:weather-partlycloudy
+    title: Weather
+    id: weather
+    theme: dark-mode
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+        - type: horizontal-stack
+          cards:
+            - type: picture-glance
+              title: Weekly
+              image:
+              camera_image: camera.montpellier
+              entities:
+                - sensor.yr_temperature
+        - type: horizontal-stack
+          cards:
+            - type: picture-glance
+              title: Now
+              image:
+              camera_image: camera.mcn
+              entities:
+                - sensor.yr_temperature
+            - type: picture-glance
+              title: H+12
+              image:
+              camera_image: camera.mcn1
+              entities:
+                - sensor.yr_temperature
+            - type: picture-glance
+              title: H+24
+              image:
+              camera_image: camera.mcn2
+              entities:
+                - sensor.yr_temperature
+        - type: horizontal-stack
+          cards:
+            - type: picture-glance
+              title: H+36
+              image:
+              camera_image: camera.mcn3
+              entities:
+                - sensor.yr_temperature
+            - type: picture-glance
+              title: H+48
+              image:
+              camera_image: camera.mcn4
+              entities:
+                - sensor.yr_temperature
+            - type: picture-glance
+              title: H+60
+              image:
+              camera_image: camera.mcn5
+              entities:
+                - sensor.yr_temperature
