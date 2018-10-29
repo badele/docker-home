@@ -99,14 +99,17 @@ camera 7:
 
 camera 8:
   - platform: mjpeg
+    name: milan
     mjpeg_url: http://92.223.183.218:8082/mjpg/video.mjpg
 
 camera 9:
   - platform: mjpeg
+    name: london
     mjpeg_url: http://81.187.169.211/mjpg/quad/video.mjpg
 
 camera 10:
   - platform: mjpeg
+    name: paris
     mjpeg_url: http://145.238.185.10/jpg/1/image.jpg
 
 

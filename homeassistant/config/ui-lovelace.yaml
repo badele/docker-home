@@ -16,7 +16,7 @@ views:
           - type: picture-glance
             title: Paris
             image:
-            camera_image: camera.mjpeg_camera_2
+            camera_image: camera.paris
             entities:
               -  binary_sensor.iss
               - sensor.yr_temperature
@@ -28,14 +28,14 @@ views:
               - type: picture-glance
                 title: London
                 image:
-                camera_image: camera.mjpeg_camera
+                camera_image: camera.london
                 entities:
                   - sensor.yr_temperature
                   - camera.mjpeg_camera_3
               - type: picture-glance
                 title: Milan
                 image:
-                camera_image: camera.mjpeg_camera_3
+                camera_image: camera.milan
                 entities:
                   - sensor.yr_temperature
                   - camera.mjpeg_camera
