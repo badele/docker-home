@@ -77,10 +77,5 @@ fi
 #$DCOMPOSE up --build zoneminder
 $DCOMPOSE build
 
-# # Create public_default docker network
-# docker network ls | grep public_default > /dev/null
-# if [ $? -eq 1 ]; then
-# 	docker network create public_default
-# fi
 # $DCOMPOSE create
 $DCOMPOSE up -d

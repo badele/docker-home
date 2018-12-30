@@ -4,7 +4,7 @@ services:
 
 
   homeassistant:
-    image:  homeassistant/home-assistant:0.80.3
+    image:  homeassistant/home-assistant:0.84.5
     container_name: homeassistant
     hostname: ${DH_IPHOMEASSISTANT}
     
@@ -20,3 +20,8 @@ services:
       - SERVICE_8123_CHECK_TCP=true
       - SERVICE_8123_CHECK_INTERVAL=15s
       - SERVICE_8123_CHECK_TIMEOUT=3s
+
+networks:
+  default:
+    external:
+      name: docker-home

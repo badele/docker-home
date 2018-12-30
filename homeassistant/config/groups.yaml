@@ -39,12 +39,23 @@ weather_camera:
     - camera.mcn4
     - camera.mcn5
 
-servers:
-  name: Servers
+service_up:
+  name: Service Up
   entities:
     - sensor.consul_passing
-    - sensor.consul_criticalwarning
+    - sensor.emq_broker_passing
+    - sensor.grafana_passing
+    - sensor.homeassistant_passing
+    - sensor.influxdb_passing
 
+service_down:
+  name: Service Down
+  entities:
+    - sensor.consul_criticalwarning
+    - sensor.emq_broker_criticalwarning
+    - sensor.grafana_criticalwarning
+    - sensor.homeassistant_criticalwarning
+    - sensor.influxdb_criticalwarning
 
 links:
   name: Links
@@ -74,13 +85,14 @@ vweather:
     - group.weather_camera
     - camera.montpellier
 
-vmisc:
-  name: Misc
-  view: yes
-  entities:
-    - group.misc
-    - group.servers
-    - group.links
+# vmisc:
+#   name: Misc
+#   view: yes
+#   entities:
+#     - group.misc
+#     - group.service_up
+#     - group.service_down
+#     - group.links
 
 vcamera:
   name: Camera

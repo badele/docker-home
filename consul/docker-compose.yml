@@ -24,3 +24,8 @@ services:
     - consul
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
+
+networks:
+  default:
+    external:
+      name: docker-home

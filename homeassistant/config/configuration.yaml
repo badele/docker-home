@@ -15,6 +15,9 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
 
+lovelace:
+  mode: yaml
+
 # Store event to influxdb database
 influxdb:
   host: ${DH_MYNODEIP}
@@ -138,26 +141,80 @@ sensor:
       #- humidity
       #- temperature
 
+  # The consul result it seem sorted, we can use index
   - platform: rest
     resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
     name: Consul Passing
-    value_template: '{{ value_json[0]["ChecksPassing"] | int }}'
+    value_template: '{{ value_json.0.ChecksPassing | int }}'
+    unit_of_measurement: 'Up'
 
   - platform: rest
     resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
     name: Consul Critical/Warning
-    value_template: '{{ value_json[0]["ChecksCritical"] + value_json[0]["ChecksWarning"] | int }}'
+    value_template: '{{ value_json.0.ChecksCritical + value_json.0.ChecksWarning | int }}'
+    unit_of_measurement: 'Down'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: EMQ broker Passing
+    value_template: '{{ value_json.1.ChecksPassing | int }}'
+    unit_of_measurement: 'Up'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: EMQ broker Critical/Warning
+    value_template: '{{ value_json.1.ChecksCritical + value_json.1.ChecksWarning | int }}'
+    unit_of_measurement: 'Down'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: grafana Passing
+    value_template: '{{ value_json.2.ChecksPassing | int }}'
+    unit_of_measurement: 'Up'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: grafana Critical/Warning
+    value_template: '{{ value_json.2.ChecksCritical + value_json.2.ChecksWarning | int }}'
+    unit_of_measurement: 'Down'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: Homeassistant Passing
+    value_template: '{{ value_json.3.ChecksPassing | int }}'
+    unit_of_measurement: 'Up'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: Homeassistant Critical/Warning
+    value_template: '{{ value_json.3.ChecksCritical + value_json.3.ChecksWarning | int }}'
+    unit_of_measurement: 'Down'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: Influxdb Passing
+    value_template: '{{ value_json.4.ChecksPassing | int }}'
+    unit_of_measurement: 'Up'
+
+  - platform: rest
+    resource: http://${DH_MYNODEIP}:80/v1/internal/ui/services
+    name: Influxdb Critical/Warning
+    value_template: '{{ value_json.4.ChecksCritical + value_json.4.ChecksWarning | int }}'
+    unit_of_measurement: 'Down'
+
 
   - platform: rest
     resource: https://api.exchangeratesapi.io/latest?symbols=USD
     name: USD currency
-    value_template: '{{ value_json["rates"]["USD"] | float }}'
+    value_template: '{{ value_json.rates.USD | float }}'
+    unit_of_measurement: '$'
 
 
   - platform: rest
     resource: https://api.carbonintensity.org.uk/intensity
     name: Carbon Intensity
-    value_template: '{{ value_json["data"][0]["intensity"]["actual"] | float }}'
+    value_template: '{{ value_json.data.0.intensity.actual | float }}'
+    unit_of_measurement: 'W'
 
   # - platform: rest
   #   resource: https://financialmodelingprep.com/api/company/price/INTC
@@ -188,7 +245,7 @@ weblink:
       url: http://${DH_MYNODEIP}:80
     - name: "Grafana server(admin/admin)"
       url: http://${DH_MYNODEIP}:3000
-    - name: "EMQTTD server(admin/public)"
+    - name: "EMQ broker server(admin/public)"
       url: http://${DH_MYNODEIP}:18083
 
 # Text to speech
@@ -197,9 +254,11 @@ tts:
 
 history_graph:
   gr1:
+    name: Bruno Carbon
     entities:
       - sensor.carbon_intensity
   gr2:
+    name: Bruno Currency
     entities:
       - sensor.usd_currency
 

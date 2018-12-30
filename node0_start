@@ -21,6 +21,13 @@ if [ -z "$1" ]; then
 	exit 0
 fi
 
+# Create public_default docker network
+docker network ls | grep docker-home > /dev/null
+if [ $? -eq 1 ]; then
+	docker network create docker-home
+fi
+
+
 if [ "$1" == "public" ]; then
 	sudo ./start_node $1 consul
 	sleeping 10 "Consul"

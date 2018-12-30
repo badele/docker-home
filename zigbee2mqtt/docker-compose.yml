@@ -14,3 +14,8 @@ services:
       - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/data:/app/data 
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
+
+networks:
+  default:
+    external:
+      name: docker-home

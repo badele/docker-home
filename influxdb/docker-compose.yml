@@ -16,3 +16,8 @@ services:
         - SERVICE_8086_CHECK_TIMEOUT=3s
       volumes:
         - ${DH_DSTDOCKER}/${DH_NODE}/${DH_ENV}/influxdb/data:/var/lib/influxdb
+
+networks:
+  default:
+    external:
+      name: docker-home

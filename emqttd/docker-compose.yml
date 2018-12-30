@@ -28,3 +28,8 @@ services:
       - SERVICE_18083_CHECK_TCP=true
       - SERVICE_18083_CHECK_INTERVAL=15s
       - SERVICE_18083_CHECK_TIMEOUT=3s
+
+networks:
+  default:
+    external:
+      name: docker-home

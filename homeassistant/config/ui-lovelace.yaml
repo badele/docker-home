@@ -48,51 +48,144 @@ views:
     cards:
       - type: vertical-stack
         cards:
-        - type: horizontal-stack
-          cards:
-            - type: picture-glance
-              title: Weekly
-              image:
-              camera_image: camera.montpellier
-              entities:
-                - sensor.yr_temperature
-        - type: horizontal-stack
-          cards:
-            - type: picture-glance
-              title: Now
-              image:
-              camera_image: camera.mcn
-              entities:
-                - sensor.yr_temperature
-            - type: picture-glance
-              title: H+12
-              image:
-              camera_image: camera.mcn1
-              entities:
-                - sensor.yr_temperature
-            - type: picture-glance
-              title: H+24
-              image:
-              camera_image: camera.mcn2
-              entities:
-                - sensor.yr_temperature
-        - type: horizontal-stack
-          cards:
-            - type: picture-glance
-              title: H+36
-              image:
-              camera_image: camera.mcn3
-              entities:
-                - sensor.yr_temperature
-            - type: picture-glance
-              title: H+48
-              image:
-              camera_image: camera.mcn4
-              entities:
-                - sensor.yr_temperature
-            - type: picture-glance
-              title: H+60
-              image:
-              camera_image: camera.mcn5
-              entities:
-                - sensor.yr_temperature
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: Temp
+                entity: sensor.yr_temperature
+                max: 45
+                severity:
+                  green: 20
+                  yellow: 25
+                  red: 32
+              - type: gauge
+                name: Winds
+                entity: sensor.yr_wind_speed
+                max: 70
+                severity:
+                  green: 14
+                  yellow: 28
+                  red: 42
+              - type: gauge
+                name: Humidity
+                entity: sensor.yr_humidity
+                max: 100
+                severity:
+                  green: 50
+                  yellow: 0
+                  red: 60
+              - type: gauge
+                name: Precipitation
+                entity: sensor.yr_precipitation
+                max: 500
+                severity:
+                  green: 10
+                  yellow: 100
+                  red: 200
+              - type: gauge
+                name: Frog
+                entity: sensor.yr_fog
+                max: 100
+                severity:
+                  green: 20
+                  yellow: 40
+                  red: 60
+          - type: horizontal-stack
+            cards:
+              - type: picture-glance
+                title: Weekly
+                image:
+                camera_image: camera.montpellier
+                entities:
+                  - sensor.yr_temperature
+          - type: horizontal-stack
+            cards:
+              - type: picture-glance
+                title: Now
+                image:
+                camera_image: camera.mcn
+                entities:
+                  - sensor.yr_temperature
+              - type: picture-glance
+                title: H+12
+                image:
+                camera_image: camera.mcn1
+                entities:
+                  - sensor.yr_temperature
+              - type: picture-glance
+                title: H+24
+                image:
+                camera_image: camera.mcn2
+                entities:
+                  - sensor.yr_temperature
+          - type: horizontal-stack
+            cards:
+              - type: picture-glance
+                title: H+36
+                image:
+                camera_image: camera.mcn3
+                entities:
+                  - sensor.yr_temperature
+              - type: picture-glance
+                title: H+48
+                image:
+                camera_image: camera.mcn4
+                entities:
+                  - sensor.yr_temperature
+              - type: picture-glance
+                title: H+60
+                image:
+                camera_image: camera.mcn5
+                entities:
+                  - sensor.yr_temperature
+
+  - icon: mdi:power-standby
+    title: Is Up
+    id: isup
+    theme: dark-mode
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: Consul
+                entity: sensor.consul_passing
+                max: 3
+                severity:
+                  green: 3
+                  yellow: 0
+                  red: 1
+              - type: gauge
+                name: EMQ Broker
+                entity: sensor.emq_broker_passing
+                max: 8
+                severity:
+                  green: 8
+                  yellow: 0
+                  red: 1
+              - type: gauge
+                name: Grafana
+                entity: sensor.grafana_passing
+                max: 2
+                severity:
+                  green: 2
+                  yellow: 0
+                  red: 1
+              - type: gauge
+                name: Homeassistant
+                entity: sensor.homeassistant_passing
+                max: 2
+                severity:
+                  green: 2
+                  yellow: 0
+                  red: 1
+              - type: gauge
+                name: influxdb
+                entity: sensor.influxdb_passing
+                max: 2
+                severity:
+                  green: 2
+                  yellow: 0
+                  red: 1
